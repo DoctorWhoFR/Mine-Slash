@@ -1,0 +1,38 @@
+api-version: 1.16
+name: MineAndSlash
+main: fr.azgin.main.MainClass
+version: 0.01
+depend: [OpenAudioMc, NPCLibPlugin, MythicMobs, Vault, WorldGuardEvents, WorldGuard]
+softdepend: [HolographicDisplays]
+commands:
+  bal:
+    description: bal
+    usage: /<command>
+  levelmanagement:
+    description: controll level and xp
+    usage: /<command> [xp|level] [set|add] <number>
+  chatcontroll:
+    description: chat controll command
+    usage: /<command> [clear]
+    aliases: [cct]
+  placepit:
+    description: place a campfire
+    usage: /<command>
+  test:
+    description: test
+    usage: /test [add|set] <number>
+  particle:
+    description: particle
+    usage: /particle
+  changelevel:
+    description: testing command
+    usage: /adlevel <level>
+  spawn:
+    description: Pour rejoindre skyeden
+    usage: /spawn
+  plugins:
+    description: blocked
+    usage: /blocked
+  classe:
+    description: classe command
+    usage: /classe [guerrier|archer|mage]

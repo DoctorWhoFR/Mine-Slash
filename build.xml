@@ -1,0 +1,60 @@
+<project >
+    <!-- http://frank.zinepal.com/unsign-a-jar-with-ant -->
+    <macrodef name="unsignjar">
+
+        <attribute name="jar"/>
+
+        <sequential>
+            <!-- Remove any existing signatures from a JAR file. -->
+            <tempfile prefix="usignjar-" destdir="${java.io.tmpdir}" property="temp.file"/>
+            <echo message="Removing signatures from JAR: @{jar}"/>
+            <mkdir dir="${temp.file}"/>
+
+            <unjar src="@{jar}" dest="${temp.file}">
+                <patternset>
+                    <include name="**"/>
+                    <exclude name="META-INF/*.SF"/>
+                    <exclude name="META-INF/*.DSA"/>
+                    <exclude name="META-INF/*.RSA"/>
+                </patternset>
+            </unjar>
+
+            <delete file="@{jar}" failonerror="true"/>
+
+            <!-- Touch it in case the file didn't have a manifest.
+                 Otherwise the JAR task below will fail if the manifest
+                 file doesn't exist. -->
+            <mkdir dir="${temp.file}/META-INF"/>
+            <touch file="${temp.file}/META-INF/MANIFEST.MF"/>
+
+            <jar destfile="@{jar}"
+                 basedir="${temp.file}"
+                 includes="**"
+                 manifest="${temp.file}/META-INF/MANIFEST.MF"/>
+
+            <delete dir="${temp.file}" failonerror="true"/>
+        </sequential>
+    </macrodef>
+
+    <!--unsign single jar -->
+    <unsignjar jar="C:\Users\Utilisateur\Desktop\mine&amp;slash\plugins\Mine&amp;Slash.jar"/>
+
+    <!--unsign and then re-sign fileset -->
+    <for param="file">
+        <path>
+            <fileset dir="lib" includes="**/*.jar"/>
+        </path>
+        <sequential>
+            <antcall target="unsignjar">
+                <param name="jar" value="@{file}"/>
+            </antcall>
+            <signjar
+                    jar="@{file}"
+                    alias="myalias"
+                    storepass="mypass"
+                    keystore="keystore"/>
+        </sequential>
+    </for>
+
+
+</project>
