@@ -2,3 +2,6 @@
 /out/*
 /target
 /out
+/target/
+\target\*
+\target\
