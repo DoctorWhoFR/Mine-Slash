@@ -36,7 +36,7 @@ public class MineSlashExpansion extends PlaceholderExpansion {
 
 
     @Override
-    public String onRequest(OfflinePlayer player, String identifier){
+    public String onRequest(OfflinePlayer player, @NotNull String identifier){
 
         if(this.mainClass.playerList.size() != 0){
             if(identifier.equals("level")) {
@@ -116,6 +116,14 @@ public class MineSlashExpansion extends PlaceholderExpansion {
                     return String.valueOf(Math.round(np.getMaxMana()));
                 }
             }
+
+            if(identifier.equals("classe")){
+                if (player.isOnline() && player.getPlayer() != null) {
+                    NewPlayer np = this.mainClass.getPlayer(player.getPlayer());
+                    return String.valueOf(np.getClasse());
+                }
+            }
+
         }
 
         // We return null if an invalid placeholder (f.e. %example_placeholder3%)
