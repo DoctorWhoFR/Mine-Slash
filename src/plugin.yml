@@ -36,3 +36,6 @@ commands:
   classe:
     description: classe command
     usage: /classe [guerrier|archer|mage]
+  resetclasse:
+    description: reset classe [console only]
+    usage: /<command> <player>

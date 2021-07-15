@@ -32,13 +32,13 @@ public class ClasseCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
+        main.getLogger().info(strings.length + "");
+        if(commandSender instanceof Player){
+            if(strings.length != 0){
 
-        if(strings.length == 2){
+                Player player = (Player) commandSender;
+                String _classe = strings[0];
 
-            Player player = Bukkit.getPlayer(strings[0]);
-            String _classe = strings[1];
-
-            if(player != null){
                 NewPlayer np = main.getPlayer(player);
 
                 if(np.getClasse().equals("null")){
@@ -51,25 +51,12 @@ public class ClasseCommand implements CommandExecutor {
 
                     return true;
                 } else {
-                    if(commandSender instanceof ConsoleCommandSender){
-                        ItemStack crow = mmm.getMythicMobsItems("KingsCrown");
+                    np.get_p().sendMessage("vous avez déjà une classe");
 
-                        Inventory inventory = np.get_p().getInventory();
-                        if(inventory.contains(crow)){
-                            inventory.remove(crow);
-                            np.setClasse(_classe);
-                            np.get_p().sendMessage("Vous venez de changez de classe par: " + _classe);
-                        }
-
-
-                    } else {
-                        np.get_p().sendMessage("vous avez déjà une classe, vous pouvez changez de classe auprès du maitre de stage.");
-                    }
                     return true;
                 }
             }
         }
-
         return false;
     }
 }

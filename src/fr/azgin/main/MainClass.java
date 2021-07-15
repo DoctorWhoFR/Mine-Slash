@@ -90,14 +90,14 @@ public class    MainClass extends JavaPlugin  {
 
        try {
            ConnectionString connString = new ConnectionString(
-                   "mongodb+srv://azgintest:XSdSd4yhlwM3jNzw@cluster0.hvwip.mongodb.net/test?retryWrites=true&w=majority"
+                   "mongodb://AdminSammy:tardisloved123@163.172.15.88:27017"
            );
            MongoClientSettings settings = MongoClientSettings.builder()
                    .applyConnectionString(connString)
                    .retryWrites(true)
                    .build();
            MongoClient mongoClient = MongoClients.create(settings);
-           this.database = mongoClient.getDatabase("test");
+           this.database = mongoClient.getDatabase("mineslash");
 
            MongoCollection<Document> test = database.getCollection("players");
 
@@ -123,6 +123,7 @@ public class    MainClass extends JavaPlugin  {
         this.getCommand("levelmanagement").setExecutor(new LevelManagementCommand());
         this.getCommand("bal").setExecutor(new ballanceCommand());
         this.getCommand("classe").setExecutor(new ClasseCommand());
+        this.getCommand("resetclasse").setExecutor(new resetClasseCommand());
 
         Bukkit.getPluginManager().registerEvents(new SystemRecollectListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerLoadingEventListener(), this);
