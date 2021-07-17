@@ -12,10 +12,12 @@ public class ManaWithdrawMechanic extends SkillMechanic implements ITargetedEnti
 
     MainClass main = MainClass.getInstance();
 
+    int mana_to_withdraw = 0;
+
     public ManaWithdrawMechanic(String skill, MythicLineConfig mlc) {
         super(skill, mlc);
 
-
+        this.mana_to_withdraw = mlc.getInteger("amount");
     }
 
     @Override
@@ -24,9 +26,9 @@ public class ManaWithdrawMechanic extends SkillMechanic implements ITargetedEnti
         if(abstractEntity.isPlayer()){
             NewPlayer np = this.main.getPlayerByUUID(abstractEntity.getUniqueId());
 
-            np.removeMana(100);
+            np.removeMana(this.mana_to_withdraw);
 
-            this.main.getLogger().info("removed 100 mana from " + abstractEntity.getName());
+            this.main.getLogger().info("removed "+this.mana_to_withdraw+" mana from " + abstractEntity.getName());
         }
 
 
