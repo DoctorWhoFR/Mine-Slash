@@ -166,6 +166,8 @@ public class PlayerLoadingEventListener implements Listener {
         if(!e.isSneaking()){
             if(np.getMANA() + 60 < np.getMaxMana()){
                 np.addMANA(60);
+            } else {
+                np.setMANA((int) np.getMaxMana());
             }
         }
 
