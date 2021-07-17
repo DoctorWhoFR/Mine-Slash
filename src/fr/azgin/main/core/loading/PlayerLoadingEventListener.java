@@ -73,7 +73,7 @@ public class PlayerLoadingEventListener implements Listener {
             this.setPlayerStats(p);
             this.welcomeMessage(np);
         } else {
-            Document document = new Document("uuid", p.getUniqueId().toString()).append("level", "1").append("xp", "0").append("mana", "100").append("faction", null).append("faction_level", "1").append("faction_xp", "0").append("craft_level", "1").append("craft_xp", "0").append("classe", null);
+            Document document = new Document("uuid", p.getUniqueId().toString()).append("dieu", null).append("level", "1").append("xp", "0").append("mana", "100").append("faction", null).append("faction_level", "1").append("faction_xp", "0").append("craft_level", "1").append("craft_xp", "0").append("classe", null);
             players.insertOne(document);
 
             NewPlayer np = new NewPlayer(p, document);

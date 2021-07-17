@@ -39,3 +39,9 @@ commands:
   resetclasse:
     description: reset classe [console only]
     usage: /<command> <player>
+  dieu:
+    description: choisir votre dieu
+    usage: /<command> []
+  buff:
+    description: permet d'obtenir le buff de dieu [console only]
+    usage: /<command> <player>

@@ -121,12 +121,27 @@ public class MineSlashExpansion extends PlaceholderExpansion {
                 if (player.isOnline() && player.getPlayer() != null) {
                     NewPlayer np = this.mainClass.getPlayer(player.getPlayer());
 
-                    String classe = String.valueOf(np.getClasse());
+                    String classe = np.getClasse();
 
                     if(classe.equals("null")){
                         return "AUCUNE CLASSE";
                     } else {
                         return String.valueOf(np.getClasse());
+                    }
+
+                }
+            }
+
+            if(identifier.equals("dieu")){
+                if (player.isOnline() && player.getPlayer() != null) {
+                    NewPlayer np = this.mainClass.getPlayer(player.getPlayer());
+
+                    String dieu = np.getDieu();
+
+                    if(dieu.equals("null")){
+                        return "AUCUN DIEU";
+                    } else {
+                        return dieu;
                     }
 
                 }

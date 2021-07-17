@@ -83,6 +83,7 @@ public class    MainClass extends JavaPlugin  {
     }
 
     public static ArrayList<String> classes_lists = new ArrayList<String>();
+    public static ArrayList<String> dieux_lists = new ArrayList<String>();
 
     @Override
     public void onEnable() {
@@ -90,6 +91,11 @@ public class    MainClass extends JavaPlugin  {
         classes_lists.add("guerrier");
         classes_lists.add("mage");
         classes_lists.add("archer");
+
+
+        dieux_lists.add("poseidon");
+        dieux_lists.add("hades");
+        dieux_lists.add("hephaistos");
 
        try {
            ConnectionString connString = new ConnectionString(
@@ -127,6 +133,8 @@ public class    MainClass extends JavaPlugin  {
         this.getCommand("bal").setExecutor(new ballanceCommand());
         this.getCommand("classe").setExecutor(new ClasseCommand());
         this.getCommand("resetclasse").setExecutor(new resetClasseCommand());
+        this.getCommand("dieu").setExecutor(new DieuCommand());
+        this.getCommand("buff").setExecutor(new BuffCommand());
 
         Bukkit.getPluginManager().registerEvents(new SystemRecollectListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerLoadingEventListener(), this);
