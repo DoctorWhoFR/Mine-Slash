@@ -257,6 +257,31 @@ public class NewPlayer {
         return "null";
     }
 
+    ///
+    // Classe function
+    ////
+
+    public void setDieu(String classe){
+        Bson modification = new Document("dieu", classe);
+        Bson modifcation_query = new Document("$set", modification);
+
+        this.players.updateOne(this.document, modifcation_query);
+
+        this.updatePlayer();
+    }
+
+    public String getDieu(){
+        Document doc = this.document;
+        Object classe = doc.get("dieu");
+
+        if(classe != null){
+            return classe.toString();
+        }
+
+        return "null";
+    }
+
+
 
     // ----------------------------------------------------
 
