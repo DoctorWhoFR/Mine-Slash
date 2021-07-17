@@ -227,7 +227,7 @@ public class NewPlayer {
         int level = Integer.parseInt(doc.get("level").toString());
         int mana = Integer.parseInt(doc.get("mana").toString());
 
-        double needed_mana = 1000+(10*level);
+        double needed_mana = 100+(10*level);
 
         return (100*mana) / needed_mana;
 
