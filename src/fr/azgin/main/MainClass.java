@@ -71,6 +71,9 @@ public class    MainClass extends JavaPlugin  {
     public static String SKYMAP = "skycity";
     public static String LTTM = "lttm";
 
+
+    public MongoClient client = null;
+
     public void sendLogMessage(String message){
         logger.info("\n" + "\n" + "\n" + "\n" + message + ConsoleColor.WHITE + "\n"  + "\n" + "\n" + "\n");
     }
@@ -98,6 +101,7 @@ public class    MainClass extends JavaPlugin  {
                    .build();
            MongoClient mongoClient = MongoClients.create(settings);
            this.database = mongoClient.getDatabase("mineslash");
+           this.client = mongoClient;
 
            MongoCollection<Document> test = database.getCollection("players");
 
@@ -108,7 +112,6 @@ public class    MainClass extends JavaPlugin  {
        }
 
 
-        this.pusher.setCluster("eu");
 
         instance = this;
 
@@ -147,6 +150,15 @@ public class    MainClass extends JavaPlugin  {
         }
 
         setupPermissions();
+
+
+    }
+
+    @Override
+    public void onDisable() {
+
+        this.client.close();
+        this.logger.info("Closing connection to database to prevent multiple handle error");
 
 
     }
