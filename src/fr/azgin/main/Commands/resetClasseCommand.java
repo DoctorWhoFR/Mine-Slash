@@ -2,11 +2,16 @@ package fr.azgin.main.Commands;
 
 import fr.azgin.main.MainClass;
 import fr.azgin.main.core.loading.Model.NewPlayer;
+import fr.azgin.main.mythicmobs.MythicMobManager;
+import io.lumine.xikage.mythicmobs.items.MythicItem;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class resetClasseCommand implements CommandExecutor {
@@ -20,12 +25,35 @@ public class resetClasseCommand implements CommandExecutor {
         if(!(sender instanceof Player)){
             if(args.length == 1){
                 Player p = Bukkit.getPlayer(args[0]);
-                NewPlayer np = mainClass.getPlayer(p);
-                np.setClasse(null);
+
+                MythicMobManager mm = new MythicMobManager();
+
+                ItemStack m = mm.getMythicMobsItems("book1");
+
+
+
                 if (p != null) {
-                    p.sendMessage("Vous venez de reset votre classe");
+                    Inventory playerInventory = p.getInventory();
+
+                    if(playerInventory.contains(m)){
+                        NewPlayer np = mainClass.getPlayer(p);
+                        np.setClasse(null);
+
+                        p.sendMessage("Vous venez de reset votre classe");
+
+                        playerInventory.remove(m);
+
+                        p.sendMessage("fuck but i love myself");
+                    }
+
+
+
+
                 }
-            }
+
+
+               }
+            return true;
         }
 
         return false;
