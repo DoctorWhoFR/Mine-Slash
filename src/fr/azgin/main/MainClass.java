@@ -135,6 +135,7 @@ public class    MainClass extends JavaPlugin  {
         this.getCommand("resetclasse").setExecutor(new resetClasseCommand());
         this.getCommand("dieu").setExecutor(new DieuCommand());
         this.getCommand("buff").setExecutor(new BuffCommand());
+        this.getCommand("bug").setExecutor(new BugCommand());
 
         Bukkit.getPluginManager().registerEvents(new SystemRecollectListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerLoadingEventListener(), this);

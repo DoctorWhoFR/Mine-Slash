@@ -45,3 +45,6 @@ commands:
   buff:
     description: permet d'obtenir le buff de dieu [console only]
     usage: /<command> <player>
+  bug:
+    description: vous permet d'envoyer une demande d'aide
+    usage: /<command> [votre message]
