@@ -20,7 +20,7 @@ public class LevelManagementCommand implements CommandExecutor {
             Player p = (Player) commandSender;
             NewPlayer np = this.mainClass.getPlayer(p);
 
-            if(strings.length != 0){
+            if(strings.length == 3){
                 if(p.isOp()){
                     if(strings[0].equalsIgnoreCase("level")){
                         if(strings[1].equalsIgnoreCase("set") && strings[2] != null){
@@ -32,13 +32,16 @@ public class LevelManagementCommand implements CommandExecutor {
                         if(strings[1].equalsIgnoreCase("set") && strings[2] != null){
                             np.setXP(Integer.parseInt(strings[2]));
                         } else if(strings[1].equalsIgnoreCase("add") && strings[2] != null){
-                            np.addMANA(Integer.parseInt(strings[2]));
+                            np.addXP(Integer.parseInt(strings[2]));
                         }
                     }
                 }
+                np.updatePlayer();
+
             } else {
                 p.sendMessage(np.getDocument().toString());
             }
+
 
 
 
