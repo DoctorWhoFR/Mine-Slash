@@ -12,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -31,15 +32,14 @@ public class BugCommand implements CommandExecutor {
         if(sender instanceof Player){
 
             Player p = (Player) sender;
-            PersistentDataContainer dataContainer = p.getPersistentDataContainer();
-            NamespacedKey key = new NamespacedKey(main, "bug_cooldown");
 
-            if(!(dataContainer.has(key, PersistentDataType.INTEGER))){
 
-                if(args.length > 1) {
+            if(!(p.hasMetadata("bug_countdown"))){
 
-                    dataContainer.set(key, PersistentDataType.INTEGER, 1);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> dataContainer.remove(key), (20*60)*5);
+                if(args.length >= 1) {
+
+                    p.setMetadata("bug_countdown", new FixedMetadataValue(main, "1"));
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> p.removeMetadata("bug_countdown", main), (20*60)*5);
 
                     for(String word : args){
                         final_text.append(" ").append(word);

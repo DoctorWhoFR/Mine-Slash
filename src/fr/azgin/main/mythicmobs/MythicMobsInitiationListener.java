@@ -24,13 +24,8 @@ public class MythicMobsInitiationListener implements Listener {
      */
     @EventHandler
     public void onMythicDropLoad(MythicDropLoadEvent event)	{
-        this.mainClass.getLogger().info("MythicDropLoadEvent called for drop " + event.getDropName());
 
-        if(event.getDropName().equalsIgnoreCase("SPECIAL"))	{
-            Drop drop = new SpecialItem(event.getConfig());
-            event.register(drop);
-            this.mainClass.getLogger().info("-- Registered SPECIAL drop!");
-        } else if(event.getDropName().equalsIgnoreCase("SPECIALXP")){
+       if(event.getDropName().equalsIgnoreCase("SPECIALXP")){
             Drop np = new XPDropMythic("SPECIALXP", event.getConfig());
             event.register(np);
             this.mainClass.getLogger().info("-- Registered XP drop!");
@@ -39,7 +34,6 @@ public class MythicMobsInitiationListener implements Listener {
 
     @EventHandler
     public void onMythicMechanicLoad(MythicMechanicLoadEvent event)	{
-        this.mainClass.getLogger().info("MythicMechanicLoadEvent called for mechanic " + event.getMechanicName());
 
         if(event.getMechanicName().equalsIgnoreCase("MANAWITHDRAW"))	{
             SkillMechanic mechanic = new ManaWithdrawMechanic("manawithdraw", event.getConfig());
@@ -59,7 +53,6 @@ public class MythicMobsInitiationListener implements Listener {
      */
     @EventHandler
     public void onMythicConditionLoad(MythicConditionLoadEvent event)	{
-        this.mainClass.getLogger().info("MythicConditionLoadEvent called for condition " + event.getConditionName());
 
         if(event.getConditionName().equalsIgnoreCase("MANACONDITION"))	{
             SkillCondition condition = new ManaConditionChec("MANACONDITION", event.getConfig());
