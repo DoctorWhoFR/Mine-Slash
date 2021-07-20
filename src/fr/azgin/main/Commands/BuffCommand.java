@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -26,17 +27,13 @@ public class BuffCommand implements CommandExecutor {
             if(args.length == 1){
                 Player p = Bukkit.getPlayer(args[0]);
 
-
-
                 if(p!=null){
 
-                    PersistentDataContainer dataContainer = p.getPersistentDataContainer();
-                    NamespacedKey namespacedKey = new NamespacedKey(main, "god_buff");
                     NewPlayer np = main.getPlayer(p);
 
-                    if(!dataContainer.has(namespacedKey, PersistentDataType.INTEGER)){
+                    if(!p.hasMetadata("buff_countdown")){
 
-                        dataContainer.set(namespacedKey, PersistentDataType.INTEGER, 1);
+                        p.setMetadata("buff_countdown", new FixedMetadataValue(main, 1));
 
                         switch (np.getDieu()){
                             case "poseidon":
@@ -50,7 +47,7 @@ public class BuffCommand implements CommandExecutor {
                                 break;
                         }
 
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> dataContainer.remove(namespacedKey), (20*60)*5);
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> p.removeMetadata("buff_countdown", main), (20*60)*5);
 
                         np.get_p().sendMessage("Vous venez d'obtenir le buff de faction");
 

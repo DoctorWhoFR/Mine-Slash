@@ -8,6 +8,7 @@ import io.lumine.xikage.mythicmobs.skills.SkillCondition;
 import io.lumine.xikage.mythicmobs.skills.conditions.IEntityCondition;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 
 public class ClasseCondition extends SkillCondition implements IEntityCondition {
@@ -31,11 +32,11 @@ public class ClasseCondition extends SkillCondition implements IEntityCondition 
 
             if(!classe.equals(this.classe)){
 
-                if(!np.get_p().getPersistentDataContainer().has(new NamespacedKey(main, "testing1"), PersistentDataType.STRING)){
-                    np.get_p().getPersistentDataContainer().set(new NamespacedKey(main, "testing1"), PersistentDataType.STRING, "loved");
+                if(!np.get_p().hasMetadata("classe_skill_countdown")){
+                    np.get_p().setMetadata("classe_skill_countdown", new FixedMetadataValue(main, "1"));
                     np.get_p().sendMessage("Vous n'avez pas la classe requise."+ " Classe requise:" + this.classe + "| Classe: " + np.getClasse());
 
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> np.get_p().getPersistentDataContainer().remove(new NamespacedKey(main, "testing1")), 20*10);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> np.get_p().removeMetadata("classe_skill_countdown", main), 20*10);
                 }
                 return false;
             } else {
