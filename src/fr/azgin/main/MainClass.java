@@ -75,7 +75,7 @@ public class    MainClass extends JavaPlugin  {
     public MongoClient client = null;
 
     public void sendLogMessage(String message){
-        logger.info("\n" + "\n" + "\n" + "\n" + message + ConsoleColor.WHITE + "\n"  + "\n" + "\n" + "\n");
+        logger.info("\n -------------------------------------------"+"\n" + "\n" + "\n" + "\n" + message + ConsoleColor.WHITE + "\n"  + "\n" + "\n" + "\n" + "-------------------------------------------");
     }
 
     public WorldGuardPlugin getWorldGuard() {
@@ -142,7 +142,7 @@ public class    MainClass extends JavaPlugin  {
         Bukkit.getPluginManager().registerEvents(new MythicMobsInitiationListener(), this);
         Bukkit.getPluginManager().registerEvents(new SkyCityProtection(), this);
 
-        sendLogMessage(ConsoleColor.YELLOW + "Mine&Slash" + ConsoleColor.CYAN + "loaded !");
+        sendLogMessage(ConsoleColor.YELLOW + "Mine&Slash" + ConsoleColor.CYAN + "loaded !" + ConsoleColor.WHITE);
 
         /*
         Protocolib
