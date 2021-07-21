@@ -48,3 +48,6 @@ commands:
   bug:
     description: vous permet d'envoyer une demande d'aide
     usage: /<command> [votre message]
+  exportmythiccommand:
+    description: export command into the database
+    usage: /<command>

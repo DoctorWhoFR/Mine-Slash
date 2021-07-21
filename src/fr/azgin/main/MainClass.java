@@ -136,6 +136,7 @@ public class    MainClass extends JavaPlugin  {
         this.getCommand("dieu").setExecutor(new DieuCommand());
         this.getCommand("buff").setExecutor(new BuffCommand());
         this.getCommand("bug").setExecutor(new BugCommand());
+        this.getCommand("exportmythiccommand").setExecutor(new ExportMythicCommand());
 
         Bukkit.getPluginManager().registerEvents(new SystemRecollectListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerLoadingEventListener(), this);
