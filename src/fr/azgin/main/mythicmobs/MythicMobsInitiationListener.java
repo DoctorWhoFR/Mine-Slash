@@ -4,8 +4,7 @@ import fr.azgin.main.MainClass;
 import fr.azgin.main.mythicmobs.conditions.ClasseCondition;
 import fr.azgin.main.mythicmobs.conditions.ManaConditionChec;
 import fr.azgin.main.mythicmobs.drops.XPDropMythic;
-import fr.azgin.main.mythicmobs.mechanics.ManaWithdrawMechanic;
-import fr.azgin.main.mythicmobs.mechanics.PlaySoundMechanic;
+import fr.azgin.main.mythicmobs.mechanics.*;
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicConditionLoadEvent;
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicDropLoadEvent;
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent;
@@ -43,6 +42,26 @@ public class MythicMobsInitiationListener implements Listener {
             SkillMechanic mechanic = new PlaySoundMechanic("PLAYSSOUND", event.getConfig());
             event.register(mechanic);
             this.mainClass.getLogger().info("-- Registered PLAYSSOUND mechanic!");
+        } else if(event.getMechanicName().equalsIgnoreCase("TEXTEFFECT")){
+            SkillMechanic mechanic = new TextParticleMechanic("TEXTEFFECT", event.getConfig());
+            event.register(mechanic);
+            this.mainClass.getLogger().info("-- Registered TEXTEFFECT mechanic!");
+        }  else if(event.getMechanicName().equalsIgnoreCase("CLOUDEFFECT")){
+            SkillMechanic mechanic = new CloudParticleMechanic("CLOUDEFFECT", event.getConfig());
+            event.register(mechanic);
+            this.mainClass.getLogger().info("-- Registered CLOUDEFFECT mechanic!");
+        } else if(event.getMechanicName().equalsIgnoreCase("ANIMATEDBALL")){
+            SkillMechanic mechanic = new AnimatedBallMechanic("ANIMATEDBALL", event.getConfig());
+            event.register(mechanic);
+            this.mainClass.getLogger().info("-- Registered ANIMATEDBALL mechanic!");
+        } else if(event.getMechanicName().equalsIgnoreCase("ARCMECHANIC")){
+            SkillMechanic mechanic = new ArcMechanic("ARCMECHANIC", event.getConfig());
+            event.register(mechanic);
+            this.mainClass.getLogger().info("-- Registered ARCMECHANIC mechanic!");
+        } else if(event.getMechanicName().equalsIgnoreCase("DRAGONEFFECT")){
+            SkillMechanic mechanic = new DragonMechanic("DRAGONEFFECT", event.getConfig());
+            event.register(mechanic);
+            this.mainClass.getLogger().info("-- Registered DRAGONEFFECT mechanic!");
         }
     }
 
