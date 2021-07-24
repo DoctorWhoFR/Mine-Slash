@@ -51,3 +51,9 @@ commands:
   exportmythiccommand:
     description: export command into the database
     usage: /<command>
+  lootchest:
+    description: permet de créer un loot chest
+    usage: /<command> <lootable_chest_id>
+  msreload:
+    description: reload the mineslash config file
+    usage: /<command>
