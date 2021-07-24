@@ -8,6 +8,8 @@ import com.mongodb.client.MongoDatabase;
 import com.pusher.rest.Pusher;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import fr.azgin.main.Commands.*;
+import fr.azgin.main.LootChest.lootchestCommand;
+import fr.azgin.main.LootChest.lootchestListener;
 import fr.azgin.main.core.globals.SkyCityProtection;
 import fr.azgin.main.core.globals.SystemRecollectListener;
 import fr.azgin.main.core.loading.Model.NewPlayer;
@@ -96,6 +98,7 @@ public class    MainClass extends JavaPlugin  {
         // save a copy of the defautl confing if
         this.saveDefaultConfig();
 
+
         this.config = this.getConfig();
 
         classes_lists = this.config.getStringList("classes");
@@ -152,11 +155,15 @@ public class    MainClass extends JavaPlugin  {
         this.getCommand("buff").setExecutor(new BuffCommand());
         this.getCommand("bug").setExecutor(new BugCommand());
         this.getCommand("exportmythiccommand").setExecutor(new ExportMythicCommand());
+        this.getCommand("lootchest").setExecutor(new lootchestCommand());
+
 
         Bukkit.getPluginManager().registerEvents(new SystemRecollectListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerLoadingEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new MythicMobsInitiationListener(), this);
         Bukkit.getPluginManager().registerEvents(new SkyCityProtection(), this);
+
+        Bukkit.getPluginManager().registerEvents(new lootchestListener(), this);
 
         sendLogMessage(ConsoleColor.YELLOW + "Mine&Slash" + ConsoleColor.CYAN + "loaded !" + ConsoleColor.WHITE);
 
