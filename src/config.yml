@@ -1,0 +1,23 @@
+chests:
+  chest_loot_1:
+    name: "Loot chest_loot_1"
+    loots:
+      - "test"
+
+
+mongodb:
+  url: "mongodb://mineslash:mineslash_tardisloved196484&@163.172.15.88:27017"
+  database: "mineslash"
+  players_collections: "players"
+
+
+classes:
+  - paladin
+  - guerrier
+  - mage
+  - archer
+
+dieux:
+  - hades
+  - poseidon
+  - hephaistos

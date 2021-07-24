@@ -23,6 +23,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -34,6 +36,9 @@ import java.util.logging.Logger;
 
 public class    MainClass extends JavaPlugin  {
 
+
+
+    public FileConfiguration config = null;
 
     private NPCLib library;
     public Logger logger = this.getLogger();
@@ -82,34 +87,44 @@ public class    MainClass extends JavaPlugin  {
         return (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
     }
 
-    public static ArrayList<String> classes_lists = new ArrayList<String>();
-    public static ArrayList<String> dieux_lists = new ArrayList<String>();
+    public static List<String> classes_lists = new ArrayList<String>();
+    public static List<String> dieux_lists = new ArrayList<String>();
 
     @Override
     public void onEnable() {
 
-        classes_lists.add("guerrier");
-        classes_lists.add("mage");
-        classes_lists.add("archer");
+        // save a copy of the defautl confing if
+        this.saveDefaultConfig();
 
+        this.config = this.getConfig();
 
-        dieux_lists.add("poseidon");
-        dieux_lists.add("hades");
-        dieux_lists.add("hephaistos");
+        classes_lists = this.config.getStringList("classes");
+
+        dieux_lists = this.config.getStringList("dieux");
+
+        String mongodb_connect_url = this.config.getString("mongodb.url");
+        String mongodb_databse = this.config.getString("mongodb.database");
+        String mongodb_playerconnections = this.config.getString("mongodb.players_collections");
 
        try {
+           assert mongodb_connect_url != null;
            ConnectionString connString = new ConnectionString(
-                   "mongodb://AdminSammy:tardisloved123@163.172.15.88:27017"
+                   mongodb_connect_url
            );
            MongoClientSettings settings = MongoClientSettings.builder()
                    .applyConnectionString(connString)
                    .retryWrites(true)
                    .build();
            MongoClient mongoClient = MongoClients.create(settings);
-           this.database = mongoClient.getDatabase("mineslash");
+
+           assert mongodb_databse != null;
+           this.database = mongoClient.getDatabase(mongodb_databse);
+
+
            this.client = mongoClient;
 
-           MongoCollection<Document> test = database.getCollection("players");
+           assert mongodb_playerconnections != null;
+           MongoCollection<Document> test = database.getCollection(mongodb_playerconnections);
 
            sendLogMessage(ConsoleColor.BLUE+"MongoDB loaded" + ConsoleColor.GREEN + " Players loaded: " + test.countDocuments());
 
