@@ -27,8 +27,6 @@ public class ManaWithdrawMechanic extends SkillMechanic implements ITargetedEnti
             NewPlayer np = this.main.getPlayerByUUID(abstractEntity.getUniqueId());
 
             np.removeMana(this.mana_to_withdraw);
-
-            this.main.getLogger().info("removed "+this.mana_to_withdraw+" mana from " + abstractEntity.getName());
         }
 
 
