@@ -3,6 +3,7 @@ package fr.azgin.main.core.loading;
 import com.mongodb.client.MongoCollection;
 import fr.azgin.main.MainClass;
 import fr.azgin.main.core.loading.Model.NewPlayer;
+import fr.azgin.main.mythicmobs.MythicMobManager;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -10,12 +11,16 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bson.Document;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Block;
+import org.bukkit.block.TileState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.persistence.PersistentDataContainer;
 
 /**
  * @version 1.0
@@ -42,6 +47,7 @@ public class PlayerLoadingEventListener implements Listener {
     public void loadPlayer(PlayerJoinEvent event){
 
         Player p = event.getPlayer();
+
 
         if(p.isOp() || MainClass.getPerms().has(p, "admin")){
             p.sendMessage("test");
@@ -73,7 +79,7 @@ public class PlayerLoadingEventListener implements Listener {
             this.setPlayerStats(p);
             this.welcomeMessage(np);
         } else {
-            Document document = new Document("uuid", p.getUniqueId().toString()).append("dieu", null).append("level", "1").append("xp", "0").append("mana", "100").append("faction", null).append("faction_level", "1").append("faction_xp", "0").append("craft_level", "1").append("craft_xp", "0").append("classe", null);
+            Document document = new Document("uuid", p.getUniqueId().toString()).append("display_name", p.getDisplayName()).append("dieu", null).append("level", "1").append("xp", "0").append("mana", "100").append("faction", null).append("faction_level", "1").append("faction_xp", "0").append("craft_level", "1").append("craft_xp", "0").append("classe", null);
             players.insertOne(document);
 
             NewPlayer np = new NewPlayer(p, document);
@@ -172,6 +178,14 @@ public class PlayerLoadingEventListener implements Listener {
         }
 
     }
+
+//    @EventHandler
+//    public void test(BlockPlaceEvent event){
+//        Block block = event.getBlock();
+//        TileState state = (TileState) block.getState();
+//        PersistentDataContainer data = state.getPersistentDataContainer();
+//
+//    }
 
 
 }

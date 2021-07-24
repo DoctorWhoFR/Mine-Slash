@@ -20,6 +20,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
+import java.util.Random;
 
 public class lootchestListener implements Listener {
 
@@ -88,10 +89,22 @@ public class lootchestListener implements Listener {
                             MythicMobManager mmm = new MythicMobManager();
 
                             for(String loot : loots){
-                                ItemStack item = mmm.getMythicMobsItems(loot);
+                                String[] splited = loot.split(" ");
+                                String name = splited[0];
+                                String chance = splited[1];
+                                String amount = splited[2];
+                                boolean chance_check = this.calculateChance(Integer.parseInt(chance));
+                                ItemStack item = mmm.getMythicMobsItems(name);
 
                                 if(item != null){
-                                    p.getInventory().addItem(item);
+                                    item.setAmount(Integer.parseInt(amount));
+                                    if(chance_check){
+                                        p.getInventory().addItem(item);
+
+                                        if(item.getItemMeta() != null){
+                                            p.sendMessage("Vous venez de récupérez l'object: " + item.getItemMeta().getDisplayName());
+                                        }
+                                    }
                                 }
                             }
 
@@ -116,5 +129,12 @@ public class lootchestListener implements Listener {
         }
 
     }
-    
+
+    public boolean calculateChance(Integer chance){
+        if (Math.random() * 100 < chance) {
+            return true;
+        }
+
+        return false;
+    }
 }

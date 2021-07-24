@@ -1,6 +1,7 @@
 package fr.azgin.main;
 
-import com.mongodb.*;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -17,7 +18,6 @@ import fr.azgin.main.core.loading.PlayerLoadingEventListener;
 import fr.azgin.main.mythicmobs.MythicMobsInitiationListener;
 import fr.azgin.main.protocolib.MineSlashExpansion;
 import io.lumine.xikage.mythicmobs.utils.logging.ConsoleColor;
-import net.jitse.npclib.NPCLib;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bson.Document;
@@ -25,7 +25,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -33,7 +32,10 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class    MainClass extends JavaPlugin  {
@@ -42,7 +44,6 @@ public class    MainClass extends JavaPlugin  {
 
     public FileConfiguration config = null;
 
-    private NPCLib library;
     public Logger logger = this.getLogger();
 
     private static MainClass instance;
@@ -51,17 +52,13 @@ public class    MainClass extends JavaPlugin  {
         return instance;
     }
 
-    public NPCLib getNPCLib() {
-        return library;
-    }
-
     public Pusher pusher = new Pusher("1195753", "b737cb64ef9bc46deb46", "976a6169cb2ebce201dc");
 
     public MongoDatabase database = null;
 
     public int counter = 0;
 
-    public List<NewPlayer> playerList = new ArrayList<NewPlayer>();
+    public List<NewPlayer> playerList = new ArrayList<>();
 
     public World skycityworld = Bukkit.getWorld("skycitytest");
 
@@ -109,53 +106,49 @@ public class    MainClass extends JavaPlugin  {
         String mongodb_databse = this.config.getString("mongodb.database");
         String mongodb_playerconnections = this.config.getString("mongodb.players_collections");
 
-       try {
-           assert mongodb_connect_url != null;
-           ConnectionString connString = new ConnectionString(
-                   mongodb_connect_url
-           );
-           MongoClientSettings settings = MongoClientSettings.builder()
-                   .applyConnectionString(connString)
-                   .retryWrites(true)
-                   .build();
-           MongoClient mongoClient = MongoClients.create(settings);
+       assert mongodb_connect_url != null;
+       ConnectionString connString = new ConnectionString(
+               mongodb_connect_url
+       );
+       MongoClientSettings settings = MongoClientSettings.builder()
+               .applyConnectionString(connString)
+               .retryWrites(true)
+               .build();
+       MongoClient mongoClient = MongoClients.create(settings);
 
-           assert mongodb_databse != null;
-           this.database = mongoClient.getDatabase(mongodb_databse);
+       assert mongodb_databse != null;
+       this.database = mongoClient.getDatabase(mongodb_databse);
 
 
-           this.client = mongoClient;
+       this.client = mongoClient;
 
-           assert mongodb_playerconnections != null;
-           MongoCollection<Document> test = database.getCollection(mongodb_playerconnections);
+       assert mongodb_playerconnections != null;
+       MongoCollection<Document> test = database.getCollection(mongodb_playerconnections);
 
-           sendLogMessage(ConsoleColor.BLUE+"MongoDB loaded" + ConsoleColor.GREEN + " Players loaded: " + test.countDocuments());
+       sendLogMessage(ConsoleColor.BLUE+"MongoDB loaded" + ConsoleColor.GREEN + " Players loaded: " + test.countDocuments());
 
-       } catch (IllegalStateException e) {
-
-       }
 
 
 
         instance = this;
 
-        this.library = new NPCLib(this);
 
-        this.getCommand("test").setExecutor(new TestCommands());
-        this.getCommand("particle").setExecutor(new ParticleTEst());
-        this.getCommand("changelevel").setExecutor(new PusherFakeCommand());
-        this.getCommand("spawn").setExecutor(new SpawnCommand());
-        this.getCommand("plugins").setExecutor(new Plugins());
-        this.getCommand("chatcontroll").setExecutor(new ChatControlCommand());
-        this.getCommand("levelmanagement").setExecutor(new LevelManagementCommand());
-        this.getCommand("bal").setExecutor(new ballanceCommand());
-        this.getCommand("classe").setExecutor(new ClasseCommand());
-        this.getCommand("resetclasse").setExecutor(new resetClasseCommand());
-        this.getCommand("dieu").setExecutor(new DieuCommand());
-        this.getCommand("buff").setExecutor(new BuffCommand());
-        this.getCommand("bug").setExecutor(new BugCommand());
-        this.getCommand("exportmythiccommand").setExecutor(new ExportMythicCommand());
-        this.getCommand("lootchest").setExecutor(new lootchestCommand());
+        Objects.requireNonNull(this.getCommand("test")).setExecutor(new TestCommands());
+        Objects.requireNonNull(this.getCommand("particle")).setExecutor(new ParticleTEst());
+        Objects.requireNonNull(this.getCommand("changelevel")).setExecutor(new PusherFakeCommand());
+        Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new SpawnCommand());
+        Objects.requireNonNull(this.getCommand("plugins")).setExecutor(new Plugins());
+        Objects.requireNonNull(this.getCommand("chatcontroll")).setExecutor(new ChatControlCommand());
+        Objects.requireNonNull(this.getCommand("levelmanagement")).setExecutor(new LevelManagementCommand());
+        Objects.requireNonNull(this.getCommand("bal")).setExecutor(new ballanceCommand());
+        Objects.requireNonNull(this.getCommand("classe")).setExecutor(new ClasseCommand());
+        Objects.requireNonNull(this.getCommand("resetclasse")).setExecutor(new resetClasseCommand());
+        Objects.requireNonNull(this.getCommand("dieu")).setExecutor(new DieuCommand());
+        Objects.requireNonNull(this.getCommand("buff")).setExecutor(new BuffCommand());
+        Objects.requireNonNull(this.getCommand("bug")).setExecutor(new BugCommand());
+        Objects.requireNonNull(this.getCommand("exportmythiccommand")).setExecutor(new ExportMythicCommand());
+        Objects.requireNonNull(this.getCommand("lootchest")).setExecutor(new lootchestCommand());
+        Objects.requireNonNull(this.getCommand("msreload")).setExecutor(new ConfigReloadCommand());
 
 
         Bukkit.getPluginManager().registerEvents(new SystemRecollectListener(), this);
@@ -199,10 +192,12 @@ public class    MainClass extends JavaPlugin  {
         return perms;
     }
 
-    private boolean setupPermissions() {
+    private void setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
+        if(rsp != null){
+            perms = rsp.getProvider();
+        }
+
     }
 
     public Economy getEcon(){
@@ -218,7 +213,7 @@ public class    MainClass extends JavaPlugin  {
             return false;
         }
         econ = rsp.getProvider();
-        return econ != null;
+        return true;
     }
 
 
@@ -236,9 +231,8 @@ public class    MainClass extends JavaPlugin  {
 
         if(this.playerList.size() != 0){
             MetadataValue metadataValue = p.getMetadata("server_id").get(0);
-            NewPlayer np = this.playerList.get(metadataValue.asInt());
 
-            return np;
+            return this.playerList.get(metadataValue.asInt());
         }
 
         return null;
@@ -247,9 +241,12 @@ public class    MainClass extends JavaPlugin  {
     public NewPlayer getPlayerByUUID(UUID uuid){
 
         Player p = Bukkit.getPlayer(uuid);
-        MetadataValue metadataValue = p.getMetadata("server_id").get(0);
-        NewPlayer np = this.playerList.get(metadataValue.asInt());
+        MetadataValue metadataValue = null;
+        if (p != null) {
+            metadataValue = p.getMetadata("server_id").get(0);
+        }
 
-        return np;
+        assert metadataValue != null;
+        return this.playerList.get(metadataValue.asInt());
     }
 }
