@@ -1,8 +1,9 @@
 chests:
   chest_loot_1:
     name: "Loot chest_loot_1"
+    countdown: 10
     loots:
-      - "test"
+      - "shadow_vortex_1"
 
 
 mongodb:
