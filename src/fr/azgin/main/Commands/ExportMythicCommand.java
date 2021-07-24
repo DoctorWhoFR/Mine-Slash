@@ -51,6 +51,7 @@ public class ExportMythicCommand implements CommandExecutor {
                     List<String> lores = mm.getLore();
                     String internal_name = mm.getInternalName();
                     StringBuilder final_text = new StringBuilder();
+                    String IconURL = config.getString("IconURL");
 
                     for(String lore : lores){
                         final_text.append("\n").append(lore);
@@ -68,13 +69,15 @@ public class ExportMythicCommand implements CommandExecutor {
                         item.append("name", name);
                         item.append("lore", final_text.toString());
                         item.append("type", mythic_type);
+                        item.append("IconURL", Objects.requireNonNullElse(IconURL, "https://i.imgur.com/JDEL7HC.png"));
+
                         this.items.insertOne(item);
                     }
 
 
                 }
 
-                p.sendMessage("Expoted all " + mobs.size() + "items");
+                p.sendMessage("Exported all " + mobs.size() + "items");
 
                 return true;
             }
