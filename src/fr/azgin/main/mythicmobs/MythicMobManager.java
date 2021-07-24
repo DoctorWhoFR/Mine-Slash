@@ -13,6 +13,7 @@ import java.util.Optional;
 public class MythicMobManager {
 
     ItemManager im = new ItemManager(MythicMobs.inst());
+    MobManager  m = new MobManager(MythicMobs.inst());
 
     public MythicMobManager MythicMobManager(){
         return this;
@@ -24,7 +25,6 @@ public class MythicMobManager {
 
         return mythicMobOptional.orElse(null);
     }
-
 
     public ItemStack getMythicMobsItems(String name){
         ItemManager im = new ItemManager(MythicMobs.inst());
