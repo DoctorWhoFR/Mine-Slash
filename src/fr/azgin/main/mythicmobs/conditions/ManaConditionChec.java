@@ -24,7 +24,6 @@ public class ManaConditionChec extends SkillCondition implements IEntityConditio
         if(abstractEntity.isPlayer()){
             NewPlayer np = this.main.getPlayerByUUID(abstractEntity.getUniqueId());
 
-            np.get_p().sendMessage("test" + (np.getMANA() >= this.amount) + this.amount);
             return np.getMANA() >= this.amount;
         }
 
