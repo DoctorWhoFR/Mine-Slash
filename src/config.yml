@@ -1,6 +1,7 @@
 chests:
   chest_loot_1:
     name: "Loot chest_loot_1"
+    type: 0 # 0 - PER PLAYER | 1 - GLOBAL CHEST | 2 - ITEM CHEST
     countdown: 10
     loots:
       - "shadow_vortex_1"

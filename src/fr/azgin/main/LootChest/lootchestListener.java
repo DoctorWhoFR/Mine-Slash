@@ -54,6 +54,7 @@ public class lootchestListener implements Listener {
 
                     if(block.getType() == Material.CHEST){
                         container.set(mineslash_namekey, PersistentDataType.STRING, meta.asString());
+                        state.setMetadata("lootchest_global_countdown", new FixedMetadataValue(main, 0));
                         p.removeMetadata("chest_posing_check", main);
                         p.sendMessage("Vous avez avez succès défini ce coffre comme le coffre lootable:" + meta.asString());
 
@@ -68,7 +69,6 @@ public class lootchestListener implements Listener {
                         event.setCancelled(true);
 
                         String chest_loot_id = container.get(mineslash_namekey, PersistentDataType.STRING);
-                        p.sendMessage(chest_loot_id + " test");
 
                         assert chest_loot_id != null;
                         MemorySection chests_sections = (MemorySection) main.config.get("chests");
@@ -77,46 +77,63 @@ public class lootchestListener implements Listener {
                         MemorySection chest_loot = (MemorySection) chests_sections. get(chest_loot_id);
 
                         assert chest_loot != null;
-                        boolean already_looted = p.hasMetadata("mineslash_lootchest_looted");
 
                         int countdown = chest_loot.getInt("countdown");
                         String chest_name = chest_loot.getString("name");
                         List<String> loots = chest_loot.getStringList("loots");
+                        int type = chest_loot.getInt("type");
 
-                        if(!already_looted){
+                        /*
+                        IF PER PLAYER CHEST
+                         */
+                        if(type == 0){
+                            boolean already_looted = p.hasMetadata("mineslash_lootchest_looted_"+chest_loot_id);
+
+                            if(!already_looted){
+
+                                /*
+                                * Per player chest
+                                 */
+                                    lootChest(loots, p);
+
+                                    p.setMetadata("mineslash_lootchest_looted_"+chest_loot_id, new FixedMetadataValue(main, true));
+
+                                    Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
+                                        p.removeMetadata("mineslash_lootchest_looted_"+chest_loot_id, main);
+                                        p.sendMessage("Vous pouvez reloot le coffre: " + chest_name);
+                                    }, (20L * countdown));
 
 
-                            MythicMobManager mmm = new MythicMobManager();
+                            } else {
+                                p.sendMessage("Vous devez attendre: " + countdown);
+                            }
+                            /*
+                            if global chest
+                             */
+                        } else if (type == 1){
+                             if(state.hasMetadata("lootchest_global_countdown")){
+                                List<MetadataValue> _countdown = state.getMetadata("lootchest_global_countdown");
+                                MetadataValue _meta = _countdown.get(_countdown.size() - 1);
 
-                            for(String loot : loots){
-                                String[] splited = loot.split(" ");
-                                String name = splited[0];
-                                String chance = splited[1];
-                                String amount = splited[2];
-                                boolean chance_check = this.calculateChance(Integer.parseInt(chance));
-                                ItemStack item = mmm.getMythicMobsItems(name);
 
-                                if(item != null){
-                                    item.setAmount(Integer.parseInt(amount));
-                                    if(chance_check){
-                                        p.getInventory().addItem(item);
 
-                                        if(item.getItemMeta() != null){
-                                            p.sendMessage("Vous venez de récupérez l'object: " + item.getItemMeta().getDisplayName());
-                                        }
-                                    }
+                                if(_meta.asInt() == 0){
+                                    lootChest(loots, p);
+                                    state.setMetadata("lootchest_global_countdown", new FixedMetadataValue(main, 1));
+                                    state.update();
+
+                                    Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
+                                        state.setMetadata("lootchest_global_countdown", new FixedMetadataValue(main, 0));
+                                        Bukkit.broadcastMessage("Vous pouvez reloot le coffre: " + chest_name);
+                                        state.update();
+                                    }, (20L * countdown));
+
+
+                                    p.sendMessage("Vous venez de loot le coffre globale: " + chest_name);
+                                } else {
+                                    p.sendMessage("ce coffre à déjà était loot.");
                                 }
                             }
-
-                            p.setMetadata("mineslash_lootchest_looted", new FixedMetadataValue(main, true));
-
-                            Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
-                                p.removeMetadata("mineslash_lootchest_looted", main);
-                                p.sendMessage("Vous pouvez reloot le coffre: " + chest_name);
-                            }, (20L * countdown));
-
-                        } else {
-                            p.sendMessage("Vous devez attendre: " + countdown);
                         }
 
 
@@ -128,6 +145,30 @@ public class lootchestListener implements Listener {
 
         }
 
+    }
+
+    public void lootChest(List<String> loots, Player p){
+        MythicMobManager mmm = new MythicMobManager();
+
+        for(String loot : loots){
+            String[] splited = loot.split(" ");
+            String name = splited[0];
+            String chance = splited[1];
+            String amount = splited[2];
+            boolean chance_check = this.calculateChance(Integer.parseInt(chance));
+            ItemStack item = mmm.getMythicMobsItems(name);
+
+            if(item != null){
+                item.setAmount(Integer.parseInt(amount));
+                if(chance_check){
+                    p.getInventory().addItem(item);
+
+                    if(item.getItemMeta() != null){
+                        p.sendMessage("Vous venez de récupérez l'object: " + item.getItemMeta().getDisplayName());
+                    }
+                }
+            }
+        }
     }
 
     public boolean calculateChance(Integer chance){
