@@ -4,8 +4,21 @@ chests:
     type: 0 # 0 - PER PLAYER | 1 - GLOBAL CHEST | 2 - ITEM CHEST
     countdown: 10
     loots:
+      - "RodinBrut 60 3"
+      - "shadow_vortex_1 20 1"
+  global_chest:
+    name: "Loot global chest"
+    type: 1 # 0 - PER PLAYER | 1 - GLOBAL CHEST | 2 - ITEM CHEST
+    countdown: 10
+    loots:
+      - "shadow_vortex_1 40 1"
+  item_chest:
+    name: "Loot chest item loot"
+    type: 2 # 0 - PER PLAYER | 1 - GLOBAL CHEST | 2 - ITEM CHEST
+    countdown: 10
+    needed: "book1 1"
+    loots:
       - "shadow_vortex_1"
-
 
 mongodb:
   url: "mongodb://mineslash:mineslash_tardisloved196484&@163.172.15.88:27017"

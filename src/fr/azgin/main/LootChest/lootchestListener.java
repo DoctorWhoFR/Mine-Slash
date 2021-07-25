@@ -1,6 +1,7 @@
 package fr.azgin.main.LootChest;
 
 import fr.azgin.main.MainClass;
+import fr.azgin.main.core.loading.Model.NewPlayer;
 import fr.azgin.main.mythicmobs.MythicMobManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -20,7 +22,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Objects;
 
 public class lootchestListener implements Listener {
 
@@ -39,6 +41,7 @@ public class lootchestListener implements Listener {
             assert block != null;
             if(block.getType() == Material.CHEST){
                 Player p = event.getPlayer();
+                NewPlayer np = this.main.getPlayer(p);
                 boolean loot_chest_admin = p.hasMetadata("chest_posing_check");
                 NamespacedKey mineslash_namekey = new NamespacedKey(main, "mineslash_lootchest");
 
@@ -94,7 +97,11 @@ public class lootchestListener implements Listener {
                                 /*
                                 * Per player chest
                                  */
-                                    lootChest(loots, p);
+                                    boolean _check = lootChest(loots, p);
+
+                                    if(!_check){
+                                        p.sendMessage("Vous n'avez loot aucun objet.");
+                                    }
 
                                     p.setMetadata("mineslash_lootchest_looted_"+chest_loot_id, new FixedMetadataValue(main, true));
 
@@ -105,7 +112,7 @@ public class lootchestListener implements Listener {
 
 
                             } else {
-                                p.sendMessage("Vous devez attendre: " + countdown);
+                                np.sendCountdownMessage("clootchest_type1","Vous devez attendre: " + countdown, 10);
                             }
                             /*
                             if global chest
@@ -118,7 +125,12 @@ public class lootchestListener implements Listener {
 
 
                                 if(_meta.asInt() == 0){
-                                    lootChest(loots, p);
+                                    boolean _check = lootChest(loots, p);
+
+                                    if(!_check){
+                                        p.sendMessage("Vous n'avez loot aucun objet.");
+                                    }
+
                                     state.setMetadata("lootchest_global_countdown", new FixedMetadataValue(main, 1));
                                     state.update();
 
@@ -133,6 +145,55 @@ public class lootchestListener implements Listener {
                                 } else {
                                     p.sendMessage("ce coffre à déjà était loot.");
                                 }
+                            } else {
+                                 state.setMetadata("lootchest_global_countdown", new FixedMetadataValue(main, 0));
+                                 state.update();
+                             }
+                        } else if(type == 2) {
+                            if(!p.hasMetadata("mineslash_lootchest_looted_"+chest_loot_id)){
+
+                                Inventory inv = p.getInventory();
+                                MythicMobManager mmm = new MythicMobManager();
+                                String needed = chest_loot.getString("needed");
+
+                                if (needed != null) {
+                                    String[] needed_splited = needed.split(" ");
+
+                                    if(needed_splited.length == 2){
+
+                                        ItemStack _needed = mmm.getMythicMobsItems(needed_splited[0]);
+                                        _needed.setAmount(Integer.parseInt(needed_splited[1]));
+
+                                        if(inv.contains(_needed)){
+
+                                            inv.remove(_needed);
+
+                                            boolean _check = lootChest(loots, p);
+
+                                            if(!_check){
+                                                p.sendMessage("Vous n'avez loot aucun objet.");
+                                            }
+
+                                            p.setMetadata("mineslash_lootchest_looted_"+chest_loot_id, new FixedMetadataValue(main, 1));
+
+                                            Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
+                                                p.removeMetadata("mineslash_lootchest_looted_"+chest_loot_id, main);
+                                                p.sendMessage("Vous pouvez reloot le coffre: " + chest_name);
+                                            }, (20L * countdown));
+                                        } else {
+                                            p.sendMessage("vous devez avoir l'item: " + "x"+needed_splited[1] + " - " + Objects.requireNonNull(_needed.getItemMeta()).getDisplayName());
+                                        }
+
+                                    } else {
+                                        p.sendMessage("error please contact admin");
+                                    }
+                                } else {
+                                    p.sendMessage("error please contact admin");
+                                }
+
+
+                            } else {
+                                p.sendMessage("Vous devez attendre, entre chaque utilisation, même avec l'item demander.");
                             }
                         }
 
@@ -147,10 +208,13 @@ public class lootchestListener implements Listener {
 
     }
 
-    public void lootChest(List<String> loots, Player p){
+    public boolean lootChest(List<String> loots, Player p){
         MythicMobManager mmm = new MythicMobManager();
+        boolean looted = false;
 
         for(String loot : loots){
+
+
             String[] splited = loot.split(" ");
             String name = splited[0];
             String chance = splited[1];
@@ -163,12 +227,17 @@ public class lootchestListener implements Listener {
                 if(chance_check){
                     p.getInventory().addItem(item);
 
+                    if(!looted){
+                        looted = true;
+                    }
                     if(item.getItemMeta() != null){
                         p.sendMessage("Vous venez de récupérez l'object: " + item.getItemMeta().getDisplayName());
                     }
                 }
             }
         }
+
+        return looted;
     }
 
     public boolean calculateChance(Integer chance){

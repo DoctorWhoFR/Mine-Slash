@@ -10,6 +10,7 @@ import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 
 public class NewPlayer {
 
@@ -356,6 +357,23 @@ public class NewPlayer {
         for (int i = 0; i < 50; i++) {
             this.get_p().sendMessage("");
         }
+    }
+
+    public void sendCountdownMessage(String id, String message, Integer countdown){
+
+        Player p = this.get_p();
+
+        if(!p.hasMetadata("mineslash_countdown_message_"+id)){
+            p.sendMessage(message);
+
+            p.setMetadata("mineslash_countdown_message_"+id, new FixedMetadataValue(mainClass, 1));
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(mainClass, () -> {
+                p.removeMetadata("mineslash_countdown_message_"+id, mainClass);
+            }, (20L * countdown));
+        }
+
+
     }
 
 }
