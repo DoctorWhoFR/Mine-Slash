@@ -18,7 +18,8 @@ public class ConfigReloadCommand implements CommandExecutor {
             Player p = (Player) sender;
 
             if(p.hasPermission("mineslash.reload")){
-                main.getConfig();
+                main.reloadConfig();
+                main.config = main.getConfig();
                 p.sendMessage("Les fichiers de config ont était reload.");
             }
         }
