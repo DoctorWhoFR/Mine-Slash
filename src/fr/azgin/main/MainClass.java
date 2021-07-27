@@ -11,6 +11,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import fr.azgin.main.Commands.*;
 import fr.azgin.main.LootChest.lootchestCommand;
 import fr.azgin.main.LootChest.lootchestListener;
+import fr.azgin.main.advancedgui.GUIExtension;
 import fr.azgin.main.core.globals.SkyCityProtection;
 import fr.azgin.main.core.globals.SystemRecollectListener;
 import fr.azgin.main.core.loading.Model.NewPlayer;
@@ -18,6 +19,7 @@ import fr.azgin.main.core.loading.PlayerLoadingEventListener;
 import fr.azgin.main.mythicmobs.MythicMobsInitiationListener;
 import fr.azgin.main.protocolib.MineSlashExpansion;
 import io.lumine.xikage.mythicmobs.utils.logging.ConsoleColor;
+import me.leoko.advancedgui.manager.LayoutManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bson.Document;
@@ -91,6 +93,7 @@ public class    MainClass extends JavaPlugin  {
 
     @Override
     public void onEnable() {
+        instance = this;
 
         // save a copy of the defautl confing if
         this.saveDefaultConfig();
@@ -130,7 +133,6 @@ public class    MainClass extends JavaPlugin  {
 
 
 
-        instance = this;
 
 
         Objects.requireNonNull(this.getCommand("test")).setExecutor(new TestCommands());
@@ -159,6 +161,7 @@ public class    MainClass extends JavaPlugin  {
         Bukkit.getPluginManager().registerEvents(new lootchestListener(), this);
 
         sendLogMessage(ConsoleColor.YELLOW + "Mine&Slash" + ConsoleColor.CYAN + "loaded !" + ConsoleColor.WHITE);
+        LayoutManager.getInstance().registerLayoutExtension(new GUIExtension(), this);
 
         /*
         Protocolib

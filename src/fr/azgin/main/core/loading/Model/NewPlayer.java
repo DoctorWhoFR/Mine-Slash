@@ -320,7 +320,12 @@ public class NewPlayer {
     //-------------------------------------------------------------------------------------
 
 
+    public void sendCMessage(String text){
 
+        String prefix = mainClass.config.getString("prefix");
+
+        this.get_p().sendMessage(prefix + text);
+    }
 
     /**
      * update player

@@ -1,6 +1,7 @@
 package fr.azgin.main.LootChest;
 
 import fr.azgin.main.MainClass;
+import fr.azgin.main.core.loading.Model.NewPlayer;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -20,6 +21,7 @@ public class lootchestCommand implements CommandExecutor {
 
         if(sender instanceof Player){
             Player p = (Player) sender;
+            NewPlayer np = mainClass.getPlayer(p);
 
             if(p.hasPermission("mineslash.lootchest.admin")){
 
@@ -37,8 +39,10 @@ public class lootchestCommand implements CommandExecutor {
 
 
                         if(chest != null){
-                            p.sendMessage("vous pouvez maintenant cliquez sur le coffre pour le définir comme un coffre lootable");
+                            np.sendCMessage("§7Vous pouvez maintenant §d§lcliquez §7sur un coffre pour le définir comme le coffre lootable : §d" + chest_id);
                             p.setMetadata("chest_posing_check", new FixedMetadataValue(mainClass, chest_id));
+                        } else {
+                            np.sendCMessage("§7Le coffre: §d" + chest_id + " n'existe pas.");
                         }
 
 
@@ -47,6 +51,8 @@ public class lootchestCommand implements CommandExecutor {
 
 
             }
+
+            return true;
 
         }
 

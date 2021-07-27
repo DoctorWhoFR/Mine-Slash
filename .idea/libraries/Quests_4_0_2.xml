@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Quests-4.0.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../mc_server/plugins/Quests-4.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

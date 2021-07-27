@@ -4,7 +4,10 @@ import fr.azgin.main.MainClass;
 import fr.azgin.main.core.loading.Model.NewPlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class MineSlashExpansion extends PlaceholderExpansion {
 
@@ -142,6 +145,33 @@ public class MineSlashExpansion extends PlaceholderExpansion {
                         return "AUCUN DIEU";
                     } else {
                         return dieu;
+                    }
+
+                }
+            } else if(identifier.equals("gui_test")){
+                if (player.isOnline() && player.getPlayer() != null) {
+                    NewPlayer np = this.mainClass.getPlayer(player.getPlayer());
+                    String _testmeta = "mineslash_gui_test_1";
+
+                    if(np.get_p().hasMetadata(_testmeta)){
+                        List<MetadataValue> dieu = np.get_p().getMetadata(_testmeta);
+                        MetadataValue _val = dieu.get(dieu.size()-1);
+
+                        return _val.asString();
+                    } else {
+                        return "null";
+                    }
+
+                }
+            } else if(identifier.equals("dieu_buff")){
+                if (player.isOnline() && player.getPlayer() != null) {
+                    NewPlayer np = this.mainClass.getPlayer(player.getPlayer());
+                    String _testmeta = "buff_countdown";
+
+                    if(np.get_p().hasMetadata(_testmeta)){
+                        return "true";
+                    } else {
+                        return "false";
                     }
 
                 }

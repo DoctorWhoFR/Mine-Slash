@@ -59,7 +59,7 @@ public class lootchestListener implements Listener {
                         container.set(mineslash_namekey, PersistentDataType.STRING, meta.asString());
                         state.setMetadata("lootchest_global_countdown", new FixedMetadataValue(main, 0));
                         p.removeMetadata("chest_posing_check", main);
-                        p.sendMessage("Vous avez avez succès défini ce coffre comme le coffre lootable:" + meta.asString());
+                        np.sendCMessage("§7Vous avez avez succès défini ce coffre comme le coffre lootable: §d" + meta.asString());
 
                         state.update();
                     }
@@ -100,19 +100,19 @@ public class lootchestListener implements Listener {
                                     boolean _check = lootChest(loots, p);
 
                                     if(!_check){
-                                        p.sendMessage("Vous n'avez loot aucun objet.");
+                                        np.sendCMessage("§7Vous n'avez loot aucun objet.");
                                     }
 
                                     p.setMetadata("mineslash_lootchest_looted_"+chest_loot_id, new FixedMetadataValue(main, true));
 
                                     Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
                                         p.removeMetadata("mineslash_lootchest_looted_"+chest_loot_id, main);
-                                        p.sendMessage("Vous pouvez reloot le coffre: " + chest_name);
+                                        np.sendCMessage("§7Vous pouvez reloot le coffre: §d" + chest_name);
                                     }, (20L * countdown));
 
 
                             } else {
-                                np.sendCountdownMessage("clootchest_type1","Vous devez attendre: " + countdown, 10);
+                                np.sendCMessage("§7Vous devez attendre: §d" + countdown + "s");
                             }
                             /*
                             if global chest
@@ -128,7 +128,7 @@ public class lootchestListener implements Listener {
                                     boolean _check = lootChest(loots, p);
 
                                     if(!_check){
-                                        p.sendMessage("Vous n'avez loot aucun objet.");
+                                        np.sendCMessage("§7Vous n'avez loot aucun objet.");
                                     }
 
                                     state.setMetadata("lootchest_global_countdown", new FixedMetadataValue(main, 1));
@@ -136,14 +136,14 @@ public class lootchestListener implements Listener {
 
                                     Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
                                         state.setMetadata("lootchest_global_countdown", new FixedMetadataValue(main, 0));
-                                        Bukkit.broadcastMessage("Vous pouvez reloot le coffre: " + chest_name);
+                                        Bukkit.broadcastMessage("§7Le coffre global: §d" + chest_name + " §7et de nouveau disponible.");
                                         state.update();
                                     }, (20L * countdown));
 
 
-                                    p.sendMessage("Vous venez de loot le coffre globale: " + chest_name);
+                                    np.sendCMessage("§7Vous venez de loot le coffre globale: §d" + chest_name);
                                 } else {
-                                    p.sendMessage("ce coffre à déjà était loot.");
+                                    np.sendCMessage("§7Ce coffre à déjà était loot.");
                                 }
                             } else {
                                  state.setMetadata("lootchest_global_countdown", new FixedMetadataValue(main, 0));
@@ -171,17 +171,17 @@ public class lootchestListener implements Listener {
                                             boolean _check = lootChest(loots, p);
 
                                             if(!_check){
-                                                p.sendMessage("Vous n'avez loot aucun objet.");
+                                                np.sendCMessage("§7Vous n'avez loot aucun objet.");
                                             }
 
                                             p.setMetadata("mineslash_lootchest_looted_"+chest_loot_id, new FixedMetadataValue(main, 1));
 
                                             Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
                                                 p.removeMetadata("mineslash_lootchest_looted_"+chest_loot_id, main);
-                                                p.sendMessage("Vous pouvez reloot le coffre: " + chest_name);
+                                                np.sendCMessage("§7Vous pouvez reloot le coffre: §d" + chest_name);
                                             }, (20L * countdown));
                                         } else {
-                                            p.sendMessage("vous devez avoir l'item: " + "x"+needed_splited[1] + " - " + Objects.requireNonNull(_needed.getItemMeta()).getDisplayName());
+                                            np.sendCMessage("§7vous devez avoir l'item: " + "x"+needed_splited[1] + " - " + Objects.requireNonNull(_needed.getItemMeta()).getDisplayName());
                                         }
 
                                     } else {
@@ -193,7 +193,7 @@ public class lootchestListener implements Listener {
 
 
                             } else {
-                                p.sendMessage("Vous devez attendre, entre chaque utilisation, même avec l'item demander.");
+                                np.sendCMessage( "Vous devez attendre, entre chaque utilisation, même avec l'item demander.");
                             }
                         }
 
@@ -211,6 +211,7 @@ public class lootchestListener implements Listener {
     public boolean lootChest(List<String> loots, Player p){
         MythicMobManager mmm = new MythicMobManager();
         boolean looted = false;
+        NewPlayer np = main.getPlayer(p);
 
         for(String loot : loots){
 
@@ -231,7 +232,7 @@ public class lootchestListener implements Listener {
                         looted = true;
                     }
                     if(item.getItemMeta() != null){
-                        p.sendMessage("Vous venez de récupérez l'object: " + item.getItemMeta().getDisplayName());
+                        np.sendCMessage("§7Vous venez de récupérez l'object: §d" + item.getItemMeta().getDisplayName());
                     }
                 }
             }
