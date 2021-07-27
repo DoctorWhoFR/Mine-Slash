@@ -1,8 +1,11 @@
 package fr.azgin.main.mythicmobs;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
+import io.lumine.xikage.mythicmobs.adapters.AbstractLocation;
+import io.lumine.xikage.mythicmobs.adapters.AbstractWorld;
 import io.lumine.xikage.mythicmobs.items.ItemManager;
 import io.lumine.xikage.mythicmobs.items.MythicItem;
+import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 import io.lumine.xikage.mythicmobs.mobs.MobManager;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 import org.bukkit.entity.Player;
@@ -41,11 +44,10 @@ public class MythicMobManager {
         }
     }
 
-    public void getMobs(Player p ,String name){
+    public MythicMob getMobs(String name){
         MobManager mb = new MobManager(MythicMobs.inst());
 
-        MythicMob mob = mb.getMythicMob(name);
-
+        return mb.getMythicMob(name);
     }
 
 }
