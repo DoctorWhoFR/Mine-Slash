@@ -151,6 +151,7 @@ public class    MainClass extends JavaPlugin  {
         Objects.requireNonNull(this.getCommand("exportmythiccommand")).setExecutor(new ExportMythicCommand());
         Objects.requireNonNull(this.getCommand("lootchest")).setExecutor(new lootchestCommand());
         Objects.requireNonNull(this.getCommand("msreload")).setExecutor(new ConfigReloadCommand());
+        Objects.requireNonNull(this.getCommand("mount")).setExecutor(new MountCommand());
 
 
         Bukkit.getPluginManager().registerEvents(new SystemRecollectListener(), this);
