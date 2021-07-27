@@ -26,6 +26,8 @@ mongodb:
   players_collections: "players"
 
 
+mounted_delete_time: 60
+
 classes:
   - paladin
   - guerrier
