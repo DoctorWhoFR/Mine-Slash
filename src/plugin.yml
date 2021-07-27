@@ -57,3 +57,6 @@ commands:
   msreload:
     description: reload the mineslash config file
     usage: /<command>
+  mount:
+    description: testing
+    usage: /<command>
