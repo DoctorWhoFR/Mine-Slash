@@ -13,6 +13,8 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.TileState;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,7 +22,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.spigotmc.event.entity.EntityDismountEvent;
+import org.spigotmc.event.entity.EntityMountEvent;
 
 /**
  * @version 1.0
@@ -176,6 +181,40 @@ public class PlayerLoadingEventListener implements Listener {
                 np.setMANA((int) np.getMaxMana());
             }
         }
+
+    }
+
+    @EventHandler
+    public void onPlayerMountEvent(EntityMountEvent event){
+        Player p = (Player) event.getEntity();
+
+        if(p.hasMetadata("need_to_mount")){
+            p.removeMetadata("need_to_mount", mainClass);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDismountEvent(EntityDismountEvent event){
+        Player p = (Player) event.getEntity();
+        Entity ent = event.getEntity();
+
+        NewPlayer np = mainClass.getPlayer(p);
+
+        int mount_delete_time = mainClass.config.getInt("mounted_delete_time");
+
+        p.setMetadata("need_to_mount", new FixedMetadataValue(mainClass, "1"));
+        np.sendCMessage("§7Votre monture va dépot. dans §d1min");
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(mainClass, () -> {
+            if(p.hasMetadata("need_to_mount")){
+                if(!ent.isDead()){
+                    p.removeMetadata("need_to_mount", mainClass);
+                    ent.remove();
+                    np.sendCMessage("§7Votre monture vient de dispaitre.");
+                }
+            }
+
+        }, (20L * (mount_delete_time + 80)));
 
     }
 
