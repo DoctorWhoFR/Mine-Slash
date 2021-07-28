@@ -5,6 +5,7 @@ import com.craftmend.openaudiomc.api.interfaces.Client;
 import com.craftmend.openaudiomc.api.interfaces.MediaApi;
 import com.mongodb.client.MongoCollection;
 import fr.azgin.main.MainClass;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;
@@ -14,11 +15,11 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public class NewPlayer {
 
-    private MainClass mainClass = MainClass.getInstance();
+    private final MainClass mainClass = MainClass.getInstance();
 
     private Player _p = null;
 
-    private MongoCollection<Document> players = this.mainClass.database.getCollection("players");
+    private final MongoCollection<Document> players = this.mainClass.database.getCollection("players");
 
     private Document document = null;
 
@@ -109,9 +110,8 @@ public class NewPlayer {
         int xp = Integer.parseInt(doc.get("xp").toString());
         int level = Integer.parseInt(doc.get("level").toString());
         int nextlevel = level + 1;
-        double needed_xp = 100*Math.pow(1.1, level);
 
-        return needed_xp;
+        return 100*Math.pow(1.1, level);
     }
 
     public double getXpPourcent(){
@@ -326,6 +326,7 @@ public class NewPlayer {
 
         this.get_p().sendMessage(prefix + text);
     }
+
 
     /**
      * update player

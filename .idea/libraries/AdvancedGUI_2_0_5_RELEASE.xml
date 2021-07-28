@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="AdvancedGUI-2.0.5-RELEASE">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../mc_server/plugins/AdvancedGUI-2.0.5-RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -27,6 +27,8 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
+import java.util.Objects;
+
 /**
  * @version 1.0
  * @author Azgin
@@ -54,7 +56,7 @@ public class PlayerLoadingEventListener implements Listener {
         Player p = event.getPlayer();
 
 
-        if(p.isOp() || MainClass.getPerms().has(p, "admin")){
+        if(p.isOp()){
             p.sendMessage("test");
             p.setGameMode(GameMode.CREATIVE);
         }
@@ -120,13 +122,13 @@ public class PlayerLoadingEventListener implements Listener {
         p.sendMessage("" + p.isOp());
         p.sendMessage("");
         p.sendMessage(ChatColor.DARK_AQUA+">"+ChatColor.GOLD+" Votre niveau: " + np.getLevel());
-        p.sendMessage(ChatColor.DARK_AQUA+">"+ChatColor.GOLD+" Location: " + p.getLocation().getWorld().getName());
+        p.sendMessage(ChatColor.DARK_AQUA+">"+ChatColor.GOLD+" Location: " + Objects.requireNonNull(p.getLocation().getWorld()).getName());
         p.sendMessage("");
         p.spigot().sendMessage(message);
         p.sendMessage("");
         p.spigot().sendMessage(message_audio);
         p.sendMessage("");
-        p.sendMessage(ChatColor.DARK_AQUA+">"+ChatColor.GOLD+" Vie: " +  Math.round(p.getHealth()) + "/" + Math.round(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
+        p.sendMessage(ChatColor.DARK_AQUA+">"+ChatColor.GOLD+" Vie: " +  Math.round(p.getHealth()) + "/" + Math.round(Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue()));
         p.sendMessage(ChatColor.DARK_GREEN + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" );
 
     }
@@ -147,7 +149,7 @@ public class PlayerLoadingEventListener implements Listener {
         double health = 20+(powered);
 
         // set player health
-        p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+        Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(health);
         p.setHealth(health);
 
     }
@@ -158,7 +160,7 @@ public class PlayerLoadingEventListener implements Listener {
 
         NewPlayer np = this.mainClass.getPlayer(p);
 
-        this.mainClass.getServer().broadcastMessage("Le joueur vient de quitter le serveur!");
+        this.mainClass.getServer().broadcastMessage(MainClass.prefix + "§7Le joueur §d" + p.getName() +  "§7 vient de quitter le serveur!");
     }
 
 
@@ -196,7 +198,7 @@ public class PlayerLoadingEventListener implements Listener {
     @EventHandler
     public void onPlayerDismountEvent(EntityDismountEvent event){
         Player p = (Player) event.getEntity();
-        Entity ent = event.getEntity();
+        Entity ent = event.getDismounted();
 
         NewPlayer np = mainClass.getPlayer(p);
 
@@ -207,14 +209,13 @@ public class PlayerLoadingEventListener implements Listener {
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(mainClass, () -> {
             if(p.hasMetadata("need_to_mount")){
-                if(!ent.isDead()){
-                    p.removeMetadata("need_to_mount", mainClass);
-                    ent.remove();
-                    np.sendCMessage("§7Votre monture vient de dispaitre.");
-                }
+                p.removeMetadata("need_to_mount", mainClass);
+                ent.remove();
+                np.sendCMessage("§7Votre monture vient de dispaitre.");
+                p.removeMetadata("mount_spawned", mainClass);
             }
 
-        }, (20L * (mount_delete_time + 80)));
+        }, ((20L * (mount_delete_time)+40)));
 
     }
 

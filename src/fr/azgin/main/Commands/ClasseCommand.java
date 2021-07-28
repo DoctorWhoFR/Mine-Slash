@@ -6,6 +6,7 @@ import fr.azgin.main.mythicmobs.MythicMobManager;
 import io.lumine.xikage.mythicmobs.adapters.AbstractItemStack;
 import io.lumine.xikage.mythicmobs.items.ItemManager;
 import io.lumine.xikage.mythicmobs.items.MythicItem;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -32,9 +33,8 @@ public class ClasseCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        main.getLogger().info(strings.length + "");
         if(commandSender instanceof Player){
-            if(strings.length != 0){
+            if(strings.length == 1){
 
                 Player player = (Player) commandSender;
                 String _classe = strings[0];
@@ -44,14 +44,15 @@ public class ClasseCommand implements CommandExecutor {
                 if(np.getClasse().equals("null")){
                     if(MainClass.classes_lists.contains(_classe)){
                         np.setClasse(_classe);
-                        np.get_p().sendMessage("Vous venez de choisir la classe: " + _classe);
+                        np.sendCMessage("§7Vous venez de choisir la classe: §d" + _classe);
                     } else {
-                        np.get_p().sendMessage("La classe que vous avez choisi n'existe pas !");
+                        np.sendCMessage("§7La classe que vous avez choisi n'existe pas !");
                     }
 
                     return true;
                 } else {
-                    np.get_p().sendMessage("vous avez déjà une classe");
+
+                    np.sendCMessage("§7vous avez déjà une §dclasse, §7vous pouvez reset votre classe en parlant a §dSirius le maitre des armes.");
 
                     return true;
                 }

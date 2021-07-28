@@ -1,6 +1,7 @@
 package fr.azgin.main.Commands;
 
 import fr.azgin.main.MainClass;
+import fr.azgin.main.core.loading.Model.NewPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -18,15 +19,22 @@ public class ChatControlCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        if(strings.length != 0){
-            if(strings[0].equalsIgnoreCase("clear")){
-                Collection<? extends Player> playerCollection = this.main.getServer().getOnlinePlayers();
+        if(strings.length == 1){
+            Player p = (Player) commandSender;
+            if(p.hasPermission("mineslash_clearall")){
+                if(strings[0].equalsIgnoreCase("clear")){
+                    Collection<? extends Player> playerCollection = this.main.getServer().getOnlinePlayers();
 
-                for(Player p : playerCollection){
-                    for (int i = 0; i < 30; i++) {
-                        p.sendMessage(ChatColor.WHITE + "");
+                    for(Player pt : playerCollection){
+                        for (int i = 0; i < 30; i++) {
+                            pt.sendMessage(ChatColor.WHITE + "");
+                        }
                     }
+
+
                 }
+
+                p.sendMessage(MainClass.prefix + "§7Vous venez de clear le chat générale.");
 
             }
         }

@@ -25,6 +25,7 @@ public class LevelManagementCommand implements CommandExecutor {
                     if(strings[0].equalsIgnoreCase("level")){
                         if(strings[1].equalsIgnoreCase("set") && strings[2] != null){
                             np.setLevel(Integer.parseInt(strings[2]));
+
                         } else if(strings[1].equalsIgnoreCase("add") && strings[2] != null){
                             np.setLevel(np.getLevel() + Integer.parseInt(strings[2]));
                         }
@@ -38,6 +39,7 @@ public class LevelManagementCommand implements CommandExecutor {
                 }
                 np.updatePlayer();
 
+                return true;
             } else {
                 p.sendMessage(np.getDocument().toString());
             }

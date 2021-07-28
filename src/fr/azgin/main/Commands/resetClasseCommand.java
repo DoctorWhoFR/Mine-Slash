@@ -39,11 +39,8 @@ public class resetClasseCommand implements CommandExecutor {
                         NewPlayer np = mainClass.getPlayer(p);
                         np.setClasse(null);
 
-                        p.sendMessage("Vous venez de reset votre classe");
-
+                        np.sendCMessage("§7Vous venez de reset votre §dclasse");
                         playerInventory.remove(m);
-
-                        p.sendMessage("fuck but i love myself");
                     }
 
 

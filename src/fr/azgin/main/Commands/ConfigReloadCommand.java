@@ -16,12 +16,12 @@ public class ConfigReloadCommand implements CommandExecutor {
 
         if(sender instanceof Player){
             Player p = (Player) sender;
-
             if(p.hasPermission("mineslash.reload")){
                 main.reloadConfig();
                 main.config = main.getConfig();
-                p.sendMessage("Les fichiers de config ont était reload.");
+                p.sendMessage(MainClass.prefix + "§7Les fichiers de config ont était reload.");
             }
+            return true;
         }
 
         return false;

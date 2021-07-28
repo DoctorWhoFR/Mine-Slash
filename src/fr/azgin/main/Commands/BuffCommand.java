@@ -32,7 +32,6 @@ public class BuffCommand implements CommandExecutor {
                     NewPlayer np = main.getPlayer(p);
 
                     if(!p.hasMetadata("buff_countdown")){
-
                         p.setMetadata("buff_countdown", new FixedMetadataValue(main, 1));
 
                         switch (np.getDieu()){
@@ -47,15 +46,18 @@ public class BuffCommand implements CommandExecutor {
                                 break;
                         }
 
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> p.removeMetadata("buff_countdown", main), (20*60)*5);
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> p.removeMetadata("buff_countdown", main), (20*60)*main.config.getInt("buff_countdown"));
 
-                        np.get_p().sendMessage("Vous venez d'obtenir le buff de faction");
+                        np.sendCMessage("§7Vous venez d'obtenir votre buff.");
 
                     } else {
-                        np.get_p().sendMessage("Vous devez attendre 5minutes avant de pouvoir reprendre les buffs");
+                        np.sendCMessage("§7Vous devez attendre §d5minutes §7avant de pouvoir reprendre les buffs");
                     }
+                    return true;
 
 
+                } else {
+                    main.logger.warning("Une commande buff à était effectuer sur un joueur inconnu, potentiellement une mauvaise configuration.");
                 }
             }
 

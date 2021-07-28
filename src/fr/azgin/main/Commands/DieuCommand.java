@@ -27,12 +27,15 @@ public class DieuCommand implements CommandExecutor {
 
                     if(MainClass.dieux_lists.contains(_dieu)){
                         np.setDieu(_dieu);
-                        np.get_p().sendMessage("Vous venez de choisir " + _dieu + " comme Dieu");
+                        np.sendCMessage("§7Vous venez de choisir §d" + _dieu + "§7 comme Gardien protecteur");
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "buff " + p.getName());
                     }
                 } else {
-                    np.get_p().sendMessage("Vous avez déjà un Dieu: " + np.getDieu());
+
+                    np.sendCMessage("§7Vous avez déjà un Gardien: §d" + np.getDieu());
                 }
+
+                return true;
             }
         }
 

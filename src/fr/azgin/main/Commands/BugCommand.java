@@ -5,6 +5,10 @@ import club.minnced.discord.webhook.WebhookClientBuilder;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import fr.azgin.main.MainClass;
+import fr.azgin.main.core.loading.Model.NewPlayer;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Objects;
 
 public class BugCommand implements CommandExecutor {
 
@@ -28,6 +33,7 @@ public class BugCommand implements CommandExecutor {
         if(sender instanceof Player){
 
             Player p = (Player) sender;
+            NewPlayer np = main.getPlayer(p);
 
 
             if(!(p.hasMetadata("bug_countdown"))){
@@ -43,7 +49,7 @@ public class BugCommand implements CommandExecutor {
 
 
                     // Using the builder
-                    WebhookClientBuilder builder = new WebhookClientBuilder("https://discord.com/api/webhooks/866267817057714177/QnYIu90tbqqeTujZDjBHUVmikk-oSCPsNiiRGsnlTQ3tg6DMjgOGeS2IL-R-Api59TA0"); // or id, token
+                    WebhookClientBuilder builder = new WebhookClientBuilder(Objects.requireNonNull(main.config.getString("bug_report_webhook"))); // or id, token
                     builder.setThreadFactory((job) -> {
                         Thread thread = new Thread(job);
                         thread.setName("webhook_"+p.getUniqueId().toString());
@@ -71,8 +77,9 @@ public class BugCommand implements CommandExecutor {
 
                     client.close();
 
-
-                    p.sendMessage(final_text.toString());
+                    TextComponent _component = new TextComponent(MainClass.prefix + "§7Votre §dmessage §7à bien était envoyer, merci de votre contribution.");
+                    _component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(final_text.toString())));
+                    np.get_p().spigot().sendMessage(_component);
 
                     return true;
                 }

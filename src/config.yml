@@ -1,32 +1,34 @@
 chests:
-  chest_loot_1:
-    name: "Loot chest_loot_1"
-    type: 0 # 0 - PER PLAYER | 1 - GLOBAL CHEST | 2 - ITEM CHEST
-    countdown: 10
-    loots:
-      - "RodinBrut 60 3"
-      - "shadow_vortex_1 20 1"
-  global_chest:
-    name: "Loot global chest"
-    type: 1 # 0 - PER PLAYER | 1 - GLOBAL CHEST | 2 - ITEM CHEST
-    countdown: 10
-    loots:
-      - "shadow_vortex_1 40 1"
-  item_chest:
-    name: "Loot chest item loot"
-    type: 2 # 0 - PER PLAYER | 1 - GLOBAL CHEST | 2 - ITEM CHEST
-    countdown: 10
+  global_1:
+    type: 2
+    countdown: 5
+    name: test
     needed: "book1 1"
     loots:
-      - "shadow_vortex_1"
+      - shadow_vortex_1 20 1
+      - RodinBrut 60 3
+      - book1 40 1
+  test_loot_1:
+    type: 1
+    countdown: 30
+    name: test
+    loots:
+      - shadow_vortex_1 20 1
+      - RodinBrut 60 3
+      - book1 40 1
+  chest_loot_1:
+    type: 0
+    countdown: 30
+    name: Loot chest_loot_1
+    loots:
+      - RodinBrut 30 3
+
 
 mongodb:
-  url: "mongodb://mineslash:mineslash_tardisloved196484&@163.172.15.88:27017"
-  database: "mineslash"
-  players_collections: "players"
+  url: mongodb://mineslash:mineslash_tardisloved196484&@163.172.15.88:27017
+  database: mineslash
+  players_collections: players
 
-
-mounted_delete_time: 60
 
 classes:
   - paladin
@@ -34,7 +36,15 @@ classes:
   - mage
   - archer
 
+mounted_delete_time: 10 # in seconds
+buff_countdown: 60 # in minutes
+
 dieux:
   - hades
   - poseidon
   - hephaistos
+
+prefix: "§7[§eMine§f§3Slash§7] §8> "
+
+
+bug_report_webhook: "https://discord.com/api/webhooks/866267817057714177/QnYIu90tbqqeTujZDjBHUVmikk-oSCPsNiiRGsnlTQ3tg6DMjgOGeS2IL-R-Api59TA0"

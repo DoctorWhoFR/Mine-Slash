@@ -1,3 +1,10 @@
+/*
+ * This program was made by DrAzgin, you can't use this without my consent. This project is private and you can't sell it, use it for ourself or anything else.
+ *
+ * This program is licensed.
+ * Contact: max.benamara@gmail.com
+ */
+
 package fr.azgin.main;
 
 import com.mongodb.ConnectionString;
@@ -77,6 +84,7 @@ public class    MainClass extends JavaPlugin  {
     public static String SKYMAP = "skycity";
     public static String LTTM = "lttm";
 
+    public static String prefix = "";
 
     public MongoClient client = null;
 
@@ -100,6 +108,8 @@ public class    MainClass extends JavaPlugin  {
 
 
         this.config = this.getConfig();
+
+        prefix = this.config.getString("prefix");
 
         classes_lists = this.config.getStringList("classes");
 
@@ -136,7 +146,7 @@ public class    MainClass extends JavaPlugin  {
 
 
         Objects.requireNonNull(this.getCommand("test")).setExecutor(new TestCommands());
-        Objects.requireNonNull(this.getCommand("particle")).setExecutor(new ParticleTEst());
+        Objects.requireNonNull(this.getCommand("particle")).setExecutor(new AdminPlayerInfoCommand());
         Objects.requireNonNull(this.getCommand("changelevel")).setExecutor(new PusherFakeCommand());
         Objects.requireNonNull(this.getCommand("spawn")).setExecutor(new SpawnCommand());
         Objects.requireNonNull(this.getCommand("plugins")).setExecutor(new Plugins());

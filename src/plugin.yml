@@ -1,7 +1,8 @@
 api-version: 1.16
 name: MineAndSlash
 main: fr.azgin.main.MainClass
-version: 0.01
+version: 0.3
+author: DrAzgin
 depend: [OpenAudioMc, NPCLibPlugin, MythicMobs, Vault, WorldGuardEvents, WorldGuard]
 softdepend: [HolographicDisplays]
 commands:
