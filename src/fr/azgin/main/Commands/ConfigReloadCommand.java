@@ -1,6 +1,7 @@
 package fr.azgin.main.Commands;
 
 import fr.azgin.main.MainClass;
+import lombok.SneakyThrows;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,6 +12,7 @@ public class ConfigReloadCommand implements CommandExecutor {
 
     MainClass main = MainClass.getInstance();
 
+    @SneakyThrows
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
@@ -19,6 +21,7 @@ public class ConfigReloadCommand implements CommandExecutor {
             if(p.hasPermission("mineslash.reload")){
                 main.reloadConfig();
                 main.config = main.getConfig();
+                main.saveData();
                 p.sendMessage(MainClass.prefix + "§7Les fichiers de config ont était reload.");
             }
             return true;
