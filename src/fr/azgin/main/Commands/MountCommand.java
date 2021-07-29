@@ -32,6 +32,7 @@ public class MountCommand implements CommandExecutor {
             if(!p.hasMetadata("mount_spawned")) {
                 BukkitAPIHelper mb = MythicMobs.inst().getAPIHelper();
 
+
                 MythicMob mob = mb.getMythicMob("wingedspectraltiger");
                 AbstractLocation loc = BukkitAdapter.adapt(p.getLocation());
 
@@ -50,7 +51,10 @@ public class MountCommand implements CommandExecutor {
 
                 Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
                     if(p.hasMetadata("need_to_mount")){
-                        entity.remove();
+                        active.setDespawned();
+                        MythicMobs.inst().getMobManager().unregisterActiveMob(active);
+                        active.getEntity().remove();
+
                         np.sendCMessage("§7Votre monture vient de disparraitre ");
                         p.removeMetadata("need_to_mount", main);
                         p.removeMetadata("mount_spawned", main);
