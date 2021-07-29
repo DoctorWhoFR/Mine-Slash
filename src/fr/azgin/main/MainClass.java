@@ -34,22 +34,31 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class    MainClass extends JavaPlugin  {
+public class MainClass extends JavaPlugin  {
 
 
+    private File crafts_file;
+
+    public FileConfiguration crafts_list = null;
 
     public FileConfiguration config = null;
 
@@ -99,6 +108,26 @@ public class    MainClass extends JavaPlugin  {
     public static List<String> classes_lists = new ArrayList<String>();
     public static List<String> dieux_lists = new ArrayList<String>();
 
+    public void createData() {
+        crafts_file = new File(getDataFolder(),"crafts.yml");
+        if(!crafts_file.exists()) {
+            crafts_file.getParentFile().mkdirs();
+            saveResource("crafts.yml",false);
+        }
+        crafts_list = new YamlConfiguration();
+        try {
+            crafts_list.load(crafts_file);
+        }catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+    public void saveData() throws IOException{
+        crafts_list.save(crafts_file);
+    }
+    public FileConfiguration getData() {
+        return this.crafts_list;
+    }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -106,6 +135,9 @@ public class    MainClass extends JavaPlugin  {
         // save a copy of the defautl confing if
         this.saveDefaultConfig();
 
+        createData();
+
+        MemorySection _crafts = (MemorySection) this.crafts_list.get("crafts");
 
         this.config = this.getConfig();
 
@@ -162,6 +194,7 @@ public class    MainClass extends JavaPlugin  {
         Objects.requireNonNull(this.getCommand("lootchest")).setExecutor(new lootchestCommand());
         Objects.requireNonNull(this.getCommand("msreload")).setExecutor(new ConfigReloadCommand());
         Objects.requireNonNull(this.getCommand("mount")).setExecutor(new MountCommand());
+        Objects.requireNonNull(this.getCommand("craft")).setExecutor(new CraftCommand());
 
 
         Bukkit.getPluginManager().registerEvents(new SystemRecollectListener(), this);
