@@ -1,0 +1,8 @@
+crafts:
+  ultimate_sword:
+    item_id: book1
+    craft_level: 1
+    permission: ""
+    items:
+      - amet1 1
+      - amet2 5
