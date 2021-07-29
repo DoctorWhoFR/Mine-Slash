@@ -4,6 +4,10 @@ import com.mongodb.client.MongoCollection;
 import fr.azgin.main.MainClass;
 import fr.azgin.main.core.loading.Model.NewPlayer;
 import fr.azgin.main.mythicmobs.MythicMobManager;
+import io.lumine.xikage.mythicmobs.MythicMobs;
+import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
+import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
+import io.lumine.xikage.mythicmobs.mobs.MobManager;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -28,6 +32,7 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @version 1.0
@@ -197,26 +202,41 @@ public class PlayerLoadingEventListener implements Listener {
 
     @EventHandler
     public void onPlayerDismountEvent(EntityDismountEvent event){
-        Player p = (Player) event.getEntity();
-        Entity ent = event.getDismounted();
 
-        NewPlayer np = mainClass.getPlayer(p);
+        if(event.getEntity() instanceof Player){
 
-        int mount_delete_time = mainClass.config.getInt("mounted_delete_time");
+            Player p = (Player) event.getEntity();
+            Entity ent = event.getDismounted();
+            MobManager mb = MythicMobs.inst().getMobManager();
+            Optional<ActiveMob> active = mb.getActiveMob(ent.getUniqueId());
 
-        p.setMetadata("need_to_mount", new FixedMetadataValue(mainClass, "1"));
-        np.sendCMessage("§7Votre monture va dépot. dans §d1min");
+            NewPlayer np = mainClass.getPlayer(p);
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(mainClass, () -> {
-            if(p.hasMetadata("need_to_mount")){
-                p.removeMetadata("need_to_mount", mainClass);
-                ent.remove();
-                np.sendCMessage("§7Votre monture vient de dispaitre.");
-                p.removeMetadata("mount_spawned", mainClass);
-            }
+            int mount_delete_time = mainClass.config.getInt("mounted_delete_time");
 
-        }, ((20L * (mount_delete_time)+40)));
+            p.setMetadata("need_to_mount", new FixedMetadataValue(mainClass, "1"));
+            np.sendCMessage("§7Votre monture va dépot. dans §d1min");
 
+            Bukkit.getScheduler().scheduleSyncDelayedTask(mainClass, () -> {
+                if(p.hasMetadata("need_to_mount")){
+                    p.removeMetadata("need_to_mount", mainClass);
+
+                    if(active.isPresent()){
+                        ActiveMob _active = active.get();
+                        p.sendMessage("test" + _active.getDisplayName());
+                        _active.setDespawned();
+                        MythicMobs.inst().getMobManager().unregisterActiveMob(_active);
+                        _active.getEntity().remove();
+                    } else {
+                        mainClass.sendLogMessage("Mythicmobs c'est de la merde");
+                    }
+                    np.sendCMessage("§7Votre monture vient de dispaitre.");
+                    p.removeMetadata("mount_spawned", mainClass);
+                }
+
+            }, ((20L * (mount_delete_time)+40)));
+
+        }
     }
 
 //    @EventHandler
