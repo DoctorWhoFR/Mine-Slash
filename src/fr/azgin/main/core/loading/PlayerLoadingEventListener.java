@@ -27,12 +27,15 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @version 1.0
@@ -207,34 +210,45 @@ public class PlayerLoadingEventListener implements Listener {
 
             Player p = (Player) event.getEntity();
             Entity ent = event.getDismounted();
-            MobManager mb = MythicMobs.inst().getMobManager();
-            Optional<ActiveMob> active = mb.getActiveMob(ent.getUniqueId());
 
-            NewPlayer np = mainClass.getPlayer(p);
+            if(p.hasMetadata("mineslash_mythic")){
 
-            int mount_delete_time = mainClass.config.getInt("mounted_delete_time");
+                MobManager mb = MythicMobs.inst().getMobManager();
 
-            p.setMetadata("need_to_mount", new FixedMetadataValue(mainClass, "1"));
-            np.sendCMessage("§7Votre monture va dépot. dans §d1min");
+                List<MetadataValue> mythic_id_list = p.getMetadata("mineslash_mythic");
+                MetadataValue mythic_id = mythic_id_list.get(mythic_id_list.size()-1);
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(mainClass, () -> {
-                if(p.hasMetadata("need_to_mount")){
-                    p.removeMetadata("need_to_mount", mainClass);
+                Optional<ActiveMob> active = mb.getActiveMob(UUID.fromString(mythic_id.asString()));
+                NewPlayer np = mainClass.getPlayer(p);
 
-                    if(active.isPresent()){
-                        ActiveMob _active = active.get();
-                        p.sendMessage("test" + _active.getDisplayName());
-                        _active.setDespawned();
-                        MythicMobs.inst().getMobManager().unregisterActiveMob(_active);
-                        _active.getEntity().remove();
-                    } else {
-                        mainClass.sendLogMessage("Mythicmobs c'est de la merde");
+                int mount_delete_time = mainClass.config.getInt("mounted_delete_time");
+
+                p.setMetadata("need_to_mount", new FixedMetadataValue(mainClass, "1"));
+
+                Bukkit.getScheduler().scheduleSyncDelayedTask(mainClass, () -> {
+                    if(p.hasMetadata("need_to_mount")){
+                        p.removeMetadata("need_to_mount", mainClass);
+
+                        if(active.isPresent()){
+
+                            ActiveMob _active = active.get();
+
+                            if(_active.getOwner().get() == p.getUniqueId()){
+                                np.sendCMessage("§7Votre monture vient de disparraitre.");
+                                _active.setDespawned();
+                                MythicMobs.inst().getMobManager().unregisterActiveMob(_active);
+                                _active.getEntity().remove();
+                            }
+
+                        } else {
+                            mainClass.sendLogMessage("Mythicmobs c'est de la merde");
+                        }
+                        p.removeMetadata("mount_spawned", mainClass);
                     }
-                    np.sendCMessage("§7Votre monture vient de dispaitre.");
-                    p.removeMetadata("mount_spawned", mainClass);
-                }
 
-            }, ((20L * (mount_delete_time)+40)));
+                }, ((20L * (mount_delete_time)+40)));
+
+            }
 
         }
     }
