@@ -84,7 +84,7 @@ public class GUIExtension implements LayoutExtension {
 
             setQuest(item, context);
 
-        }, 0, (60) + (20*index) , font,"Quête: " + item, Color.blue);
+        }, 5, (50) + (20*index) , font,"Quête: " + item, Color.blue);
 
         // Setup history-list
         ListComponent<String> test = new ListComponent<String>("", null,
