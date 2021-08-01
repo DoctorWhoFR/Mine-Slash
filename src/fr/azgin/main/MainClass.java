@@ -195,6 +195,7 @@ public class MainClass extends JavaPlugin  {
         Objects.requireNonNull(this.getCommand("msreload")).setExecutor(new ConfigReloadCommand());
         Objects.requireNonNull(this.getCommand("mount")).setExecutor(new MountCommand());
         Objects.requireNonNull(this.getCommand("craft")).setExecutor(new CraftCommand());
+        Objects.requireNonNull(this.getCommand("adminmount")).setExecutor(new adminmountCommand());
 
 
         Bukkit.getPluginManager().registerEvents(new SystemRecollectListener(), this);

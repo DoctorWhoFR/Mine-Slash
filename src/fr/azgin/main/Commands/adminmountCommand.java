@@ -12,7 +12,10 @@ import com.mongodb.client.MongoCollection;
 import fr.azgin.main.MainClass;
 import fr.azgin.main.core.loading.Model.NewPlayer;
 import fr.azgin.main.mythicmobs.MythicMobManager;
+import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.items.MythicItem;
+import io.lumine.xikage.mythicmobs.mobs.MobManager;
+import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -44,12 +47,12 @@ public class adminmountCommand implements CommandExecutor {
 
                 if(target != null){
 
-                    MythicMobManager mmm = new MythicMobManager();
-                    Optional<MythicItem> optinal = mmm.getItems(args[1]);
+                    MobManager mmm = MythicMobs.inst().getMobManager();
+                    MythicMob optinal = mmm.getMythicMob(args[1]);
 
-                    if(optinal.isPresent()){
+                    if(optinal != null){
                         MongoCollection<Document> montures = mainClass.database.getCollection("montures");
-                        montures.insertOne(new Document("uuid", target.getUniqueId()).append("monture", args[1]));
+                        montures.insertOne(new Document("uuid", target.getUniqueId().toString()).append("monture", args[1]));
                         nt.sendCMessage("§7Vous venez d'obtenir la monture: §d" + args[1]);
                     } else {
                         sender.sendMessage("§7Le mob: §d" + args[1] + "§7n'existe pas");

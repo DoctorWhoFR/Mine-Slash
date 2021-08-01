@@ -2,6 +2,7 @@ package fr.azgin.main.Commands;
 
 import fr.azgin.main.MainClass;
 import fr.azgin.main.core.loading.Model.NewPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,11 +20,17 @@ public class AdminPlayerInfoCommand implements CommandExecutor {
             Player p = (Player) commandSender;
             NewPlayer np = this.main.getPlayer(p);
 
-            if(strings.length == 1){
 
-                if(p.hasPermission("mineslash.admininfo")){
-                    np.sendCMessage("§7mana: §d"+np.getMANA() + "§7xp: §d" + np.getXP() + " §7level: §d" + np.getLevel());
-                    p.sendMessage(np.toString());
+            if(strings.length == 1){
+                Player t = Bukkit.getPlayer(strings[0]);
+
+                if(t != null){
+                    NewPlayer nt = main.getPlayer(t);
+
+                    if(p.hasPermission("mineslash.admininfo")){
+                        np.sendCMessage("§7mana: §d"+ nt.getMANA() + "§7xp: §d" + nt.getXP() + " §7level: §d" + nt.getLevel());
+                        p.sendMessage(t.getUniqueId().toString());
+                    }
                 }
 
                 return true;
