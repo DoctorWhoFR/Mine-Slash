@@ -5,13 +5,17 @@ import com.craftmend.openaudiomc.api.interfaces.Client;
 import com.craftmend.openaudiomc.api.interfaces.MediaApi;
 import com.mongodb.client.MongoCollection;
 import fr.azgin.main.MainClass;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataType;
+
+import java.util.List;
 
 public class NewPlayer {
 
@@ -379,7 +383,26 @@ public class NewPlayer {
             }, (20L * countdown));
         }
 
+    }
 
+
+    public String getMetadata(String id){
+        List<MetadataValue> _meta = this.get_p().getMetadata(id);
+
+        if(_meta.size() > 0){
+            MetadataValue _val = _meta.get(_meta.size() - 1);
+            return _val.asString();
+        }
+
+        return null;
+    }
+
+    public void setMetadata(String id, String value){
+        this.get_p().setMetadata(id, new FixedMetadataValue(mainClass, value));
+    }
+
+    public void removeMeta(String id){
+        this.get_p().removeMetadata(id, mainClass);
     }
 
 }
